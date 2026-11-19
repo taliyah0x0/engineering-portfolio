@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Taliyah Huang - Engineering Portfolio</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23111114'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Helvetica,Arial,sans-serif' font-size='28' font-weight='700' letter-spacing='-1' fill='%23ff2e7e'%3ETH%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --accent: #ff2e7e;          /* the one pink */
+    --accent-soft: rgba(255, 46, 126, 0.10);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+    --radius-pill: 999px;
+    --ease: cubic-bezier(.2,.7,.2,1);
+    --font: "Inter", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  [data-theme="light"] {
+    --bg: #ffffff;
+    --surface: #f4f4f5;
+    --surface-2: #ebebed;
+    --text: #0a0a0a;
+    --muted: #6b6b70;
+    --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.04);
+  }
+  [data-theme="dark"] {
+    --bg: #000000;
+    --surface: #111113;
+    --surface-2: #1b1b1e;
+    --text: #f5f5f5;
+    --muted: #8d8d93;
+    --shadow: 0 1px 2px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.4);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    transition: background .4s var(--ease), color .4s var(--ease);
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: #fff; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  .label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .label .dot {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); margin-right: 8px; vertical-align: 1px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav {
+    position: sticky; top: 16px; z-index: 50;
+    margin: 16px auto 0; max-width: 1120px; padding: 0 24px;
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-radius: var(--radius-pill);
+    padding: 10px 10px 10px 22px;
+    box-shadow: var(--shadow);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -.01em; }
+  .brand-mark {
+    width: 28px; height: 28px; border-radius: 9px; background: var(--text);
+    display: grid; place-items: center; position: relative;
+  }
+  .brand-mark { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: -.02em; line-height: 1; }
+  .nav-links { display: flex; gap: 4px; align-items: center; }
+  .nav-links a {
+    font-size: 14px; color: var(--muted); padding: 8px 14px; border-radius: var(--radius-pill);
+    transition: color .2s, background .2s;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--surface-2); }
+
+  .toggle {
+    width: 64px; height: 36px; border-radius: var(--radius-pill);
+    background: var(--surface-2); border: none; cursor: pointer;
+    position: relative; margin-left: 8px; flex-shrink: 0;
+  }
+  .toggle .knob {
+    position: absolute; top: 4px; left: 4px; width: 28px; height: 28px;
+    border-radius: 50%; background: var(--bg); box-shadow: var(--shadow);
+    display: grid; place-items: center;
+    transition: transform .35s var(--ease);
+  }
+  [data-theme="dark"] .toggle .knob { transform: translateX(28px); }
+  .toggle svg { width: 15px; height: 15px; stroke: var(--accent); fill: none; stroke-width: 2; stroke-linecap: round; }
+  .toggle .moon { display: none; }
+  [data-theme="dark"] .toggle .sun { display: none; }
+  [data-theme="dark"] .toggle .moon { display: block; }
+
+  /* ---------- HERO ---------- */
+  .hero { padding: 88px 0 40px; }
+  .hero-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 20px; align-items: stretch; }
+  .hero h1 {
+    font-size: clamp(44px, 7vw, 84px); line-height: .98; letter-spacing: -.045em; font-weight: 600;
+    margin: 18px 0 22px;
+  }
+  .hero h1 .accent { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--muted); max-width: 520px; }
+  .hero-ctas { display: flex; gap: 10px; margin-top: 32px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px; border-radius: var(--radius-pill); font-size: 15px; font-weight: 500;
+    transition: transform .2s var(--ease), background .2s, color .2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--text); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent); color: #fff; }
+  .btn-ghost { background: var(--surface); }
+
+  /* "Patient chart" ID card */
+  .id-card {
+    background: var(--surface); border-radius: var(--radius-lg); padding: 26px;
+    display: flex; flex-direction: column; gap: 18px; position: relative; overflow: hidden;
+  }
+  .id-top { display: flex; justify-content: space-between; align-items: center; }
+  .status {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 500;
+    background: var(--accent-soft); color: var(--accent); padding: 6px 12px; border-radius: var(--radius-pill);
+  }
+  .status i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 1.6s infinite; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,46,126,.55); }
+    70% { box-shadow: 0 0 0 9px rgba(255,46,126,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,46,126,0); }
+  }
+  .avatar {
+    width: 100%; aspect-ratio: 4/3; border-radius: var(--radius-md); background: var(--surface-2);
+    display: grid; place-items: center; overflow: hidden; position: relative;
+  }
+  .avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: right bottom; }
+  .avatar .initials { font-size: 56px; font-weight: 600; letter-spacing: -.04em; color: var(--muted); }
+  .ecg { width: 100%; height: 46px; }
+  .ecg path {
+    fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 600; stroke-dashoffset: 600; animation: draw 3.2s linear infinite;
+  }
+  @keyframes draw { to { stroke-dashoffset: -600; } }
+  .id-rows { display: flex; flex-direction: column; gap: 10px; }
+  .id-row { display: flex; justify-content: space-between; font-size: 14px; gap: 16px; text-align: right; }
+  .id-row span:first-child { color: var(--muted); font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; text-align: left; }
+
+  /* ---------- VITALS ---------- */
+  .vitals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 20px; }
+  .vital {
+    background: var(--surface); border-radius: var(--radius-lg); padding: 24px;
+    transition: transform .3s var(--ease);
+  }
+  .vital:hover { transform: translateY(-4px); }
+  .vital .num { font-size: 40px; font-weight: 600; letter-spacing: -.04em; margin-top: 10px; }
+  .vital .num sup { font-size: 18px; color: var(--accent); margin-left: 2px; }
+  .vital .desc { color: var(--muted); font-size: 14px; }
+
+  /* ---------- SECTIONS ---------- */
+  section { padding: 72px 0; }
+  .section-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 32px; gap: 20px; flex-wrap: wrap; }
+  .section-head h2 { font-size: clamp(32px, 4.4vw, 48px); letter-spacing: -.035em; font-weight: 600; line-height: 1.05; margin-top: 10px; }
+
+  /* filters */
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; background: var(--surface); padding: 6px; border-radius: var(--radius-pill); }
+  .filters button {
+    border: none; background: transparent; color: var(--muted); font: 500 13.5px var(--font);
+    padding: 9px 16px; border-radius: var(--radius-pill); cursor: pointer; transition: all .2s;
+  }
+  .filters button.active { background: var(--bg); color: var(--text); box-shadow: var(--shadow); }
+
+  /* projects */
+  .projects { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+  .project {
+    grid-column: span 3; background: var(--surface); border-radius: var(--radius-lg); padding: 14px;
+    display: flex; flex-direction: column; cursor: pointer;
+    transition: transform .35s var(--ease), opacity .3s;
+  }
+  .project.wide { grid-column: span 4; }
+  .project.narrow { grid-column: span 2; }
+  .project:hover { transform: translateY(-6px); }
+  .project.hide { display: none; }
+  .project-media {
+    border-radius: var(--radius-md); background: var(--surface-2); aspect-ratio: 16/10; overflow: hidden;
+    position: relative; display: grid; place-items: center;
+  }
+  .project-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+  .project-media video { transition: transform .6s var(--ease); }
+  .project:hover .project-media img, .project:hover .project-media video { transform: scale(1.04); }
+  .project-media .ph { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .1em; }
+  .project-tag {
+    position: absolute; top: 12px; left: 12px; background: var(--bg); font-size: 12px; font-weight: 500;
+    padding: 6px 12px; border-radius: var(--radius-pill); z-index: 1;
+  }
+  .project-body { padding: 18px 10px 8px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .project-body h3 { font-size: 21px; letter-spacing: -.02em; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .arrow {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--bg); flex-shrink: 0;
+    display: grid; place-items: center; transition: background .25s, transform .35s var(--ease);
+  }
+  .arrow svg { width: 14px; height: 14px; stroke: var(--text); stroke-width: 2; fill: none; }
+  .project:hover .arrow { background: var(--accent); transform: rotate(-45deg); }
+  .project:hover .arrow svg { stroke: #fff; }
+  .project-body p { color: var(--muted); font-size: 14.5px; }
+  .card-date { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 10px; }
+  .chip { font-family: var(--mono); font-size: 11.5px; background: var(--bg); padding: 5px 10px; border-radius: var(--radius-pill); color: var(--muted); }
+
+  /* learning in public */
+  .section-sub { color: var(--muted); font-size: 17px; max-width: 640px; margin-top: 14px; }
+  .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
+  .principle { background: var(--surface); border-radius: var(--radius-lg); padding: 24px 26px; }
+  .principle .pnum { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: .1em; }
+  .principle h3 { font-size: 18px; font-weight: 600; letter-spacing: -.01em; margin: 10px 0 8px; }
+  .principle p { color: var(--muted); font-size: 14.5px; }
+  .learn { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+  .learn-card { background: var(--surface); border-radius: var(--radius-lg); padding: 26px; display: flex; flex-direction: column; gap: 12px; }
+  .learn-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .learn-media { display: block; border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 3 / 1; background: var(--surface-2); margin-bottom: 4px; }
+  .learn-media img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: transform .6s var(--ease); }
+  .learn-media:hover img { transform: scale(1.04); }
+  .learn-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+  .learn-stats span { background: var(--accent-soft); color: var(--text); font-size: 13px; padding: 6px 12px; border-radius: var(--radius-pill); }
+  .learn-stats b { color: var(--accent); font-weight: 600; }
+  .learn-kind { background: var(--accent); color: #fff; font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: var(--radius-pill); }
+  .learn-card h3 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+  .learn-card > p { color: var(--muted); font-size: 14.5px; }
+  .learn-parts { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .learn-parts a { display: grid; grid-template-columns: 56px 1fr auto; gap: 10px; align-items: center; background: var(--bg); border-radius: var(--radius-sm); padding: 11px 14px; font-size: 13.5px; transition: background .2s, color .2s; }
+  .learn-parts a span { font-family: var(--mono); font-size: 11.5px; color: var(--accent); }
+  .learn-parts a b { font-weight: 500; }
+  .learn-parts a i { font-style: normal; color: var(--muted); }
+  .learn-parts a:hover { background: var(--accent); color: #fff; }
+  .learn-parts a:hover span, .learn-parts a:hover i { color: #fff; }
+  .learn-link { margin-top: auto; padding-top: 6px; font-size: 14px; font-weight: 500; color: var(--accent); }
+
+  /* capabilities */
+  /* 3 cards on top, 2 wider cards below */
+  .caps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+  .cap { grid-column: span 2; background: var(--surface); border-radius: var(--radius-lg); padding: 26px; display: flex; flex-direction: column; }
+  .cap:nth-child(4), .cap:nth-child(5) { grid-column: span 3; }
+  .cap-icon {
+    width: 44px; height: 44px; border-radius: 14px; background: var(--accent-soft);
+    display: grid; place-items: center; margin-bottom: 18px;
+  }
+  .cap-icon svg { width: 20px; height: 20px; stroke: var(--accent); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .cap h3 { font-size: 18px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 14px; }
+  .meter { margin-top: 12px; }
+  .meter-top { display: flex; justify-content: space-between; font-size: 13.5px; margin-bottom: 7px; }
+  .meter-top span:last-child { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .meter-bar { height: 8px; border-radius: var(--radius-pill); background: var(--surface-2); overflow: hidden; }
+  .meter-fill { height: 100%; width: 0; border-radius: var(--radius-pill); background: var(--text); transition: width 1.2s var(--ease); }
+  .meter:first-of-type .meter-fill { background: var(--accent); }
+  .cap .chips { padding-top: 20px; }
+  .cap .chip { background: var(--bg); }
+
+  /* experience — no lines, just stacked rounded rows */
+  .exp { display: flex; flex-direction: column; gap: 12px; }
+  .exp-item {
+    background: var(--surface); border-radius: var(--radius-md); padding: 22px 26px;
+    display: grid; grid-template-columns: 170px 1fr auto; gap: 24px; align-items: center;
+    transition: background .25s;
+  }
+  .exp-item:hover { background: var(--surface-2); }
+  .exp-item .when { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+  .exp-item h4 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+  .exp-item p { color: var(--muted); font-size: 14px; margin-top: 2px; }
+  .exp-item p.note { color: var(--text); opacity: .75; font-size: 13.5px; margin-top: 6px; }
+  .exp-item .badge { font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: var(--radius-pill); background: var(--bg); white-space: nowrap; }
+  .exp-item .badge.now { background: var(--accent); color: #fff; }
+
+  /* contact */
+  .contact {
+    background: var(--text); color: var(--bg); border-radius: var(--radius-lg);
+    padding: clamp(32px, 6vw, 64px); display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: end;
+  }
+  .contact h2 { font-size: clamp(36px, 5.5vw, 64px); letter-spacing: -.045em; line-height: 1; font-weight: 600; }
+  .contact h2 .accent { color: var(--accent); }
+  .contact .label { color: color-mix(in srgb, var(--bg) 55%, transparent); }
+  .contact-links { display: flex; flex-direction: column; gap: 10px; }
+  .contact-links a {
+    display: flex; justify-content: space-between; align-items: center;
+    background: color-mix(in srgb, var(--bg) 8%, transparent);
+    padding: 16px 20px; border-radius: var(--radius-md); font-size: 15px;
+    transition: background .25s, color .25s;
+  }
+  .contact-links a:hover { background: var(--accent); color: #fff; }
+  .contact-links a span:last-child { font-family: var(--mono); font-size: 12px; opacity: .7; }
+
+  footer { padding: 36px 0 48px; display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; flex-wrap: wrap; gap: 12px; }
+
+  /* reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* =========================================================
+     CASE STUDY DETAIL PAGE
+     ========================================================= */
+  .detail { padding-top: 48px; animation: fadeUp .6s var(--ease); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .back {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted);
+    background: var(--surface); padding: 9px 16px; border-radius: var(--radius-pill); transition: color .2s, background .2s;
+  }
+  .back:hover { color: var(--text); background: var(--surface-2); }
+  .d-hero { padding: 40px 0 28px; max-width: 860px; }
+  .d-hero h1 { font-size: clamp(40px, 6.4vw, 76px); line-height: 1; letter-spacing: -.045em; font-weight: 600; margin: 16px 0 18px; }
+  .d-hero .lede { font-size: 19px; color: var(--muted); max-width: 640px; }
+  .d-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 8px 0 20px; }
+  .d-meta div { background: var(--surface); border-radius: var(--radius-md); padding: 16px 18px; }
+  .d-meta b { display: block; font-weight: 500; font-size: 14.5px; margin-top: 6px; }
+  .d-cover {
+    border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-2); aspect-ratio: 16/9; position: relative;
+  }
+  .d-cover iframe, .d-cover img { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
+  .d-cover.missing::before {
+    content: "ADD COVER IMAGE"; position: absolute; inset: 0; display: grid; place-items: center;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--muted);
+  }
+  .d-cover video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .yt { position: relative; aspect-ratio: 16/9; border-radius: var(--radius-md); overflow: hidden; background: var(--bg); margin-top: 6px; }
+  .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .prose p.todo { background: var(--accent-soft); color: var(--accent); border-radius: var(--radius-sm); padding: 12px 16px; font-family: var(--mono); font-size: 13px; }
+  .exp-item .when em { display: block; font-style: normal; color: var(--accent); margin-top: 4px; }
+  .d-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0 8px; }
+  .d-stat { background: var(--surface); border-radius: var(--radius-lg); padding: 22px 24px; }
+  .d-stat .num { font-size: 32px; font-weight: 600; letter-spacing: -.035em; color: var(--accent); }
+  .d-stat .desc { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+  .d-body { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
+  .d-sec {
+    padding: 36px; background: var(--surface); border-radius: var(--radius-lg);
+    display: grid; grid-template-columns: 120px 1fr; gap: 28px;
+  }
+  .d-num { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; color: var(--muted); padding-top: 8px; }
+  .d-num span { display: block; width: 28px; height: 4px; border-radius: 4px; background: var(--accent); margin-bottom: 12px; }
+  .d-sec h2 { font-size: clamp(24px, 3vw, 32px); letter-spacing: -.03em; font-weight: 600; line-height: 1.15; margin-bottom: 16px; }
+  .prose { font-size: 16px; max-width: 720px; }
+  .prose p { margin-bottom: 14px; color: color-mix(in srgb, var(--text) 82%, transparent); }
+  .prose ul, .prose ol { margin: 4px 0 18px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; counter-reset: n; }
+  .prose li { background: var(--bg); border-radius: var(--radius-sm); padding: 12px 16px 12px 44px; position: relative; font-size: 15px; }
+  .prose ul li::before { content: ""; position: absolute; left: 18px; top: 19px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .prose ol li { counter-increment: n; }
+  .prose ol li::before { content: counter(n, decimal-leading-zero); position: absolute; left: 14px; top: 13px; font-family: var(--mono); font-size: 12px; color: var(--accent); }
+  .prose li b { font-weight: 600; }
+  .prose a { color: var(--accent); }
+
+  .media { margin: 18px 0 22px; position: relative; }
+  .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 18px 0 22px; align-items: start; }
+  .gallery.g3 { grid-template-columns: repeat(3, 1fr); }
+  .rot-box { position: relative; overflow: hidden; border-radius: var(--radius-md); }
+  .media .rot-box img { position: absolute; top: 50%; left: 50%; max-width: none; max-height: none; object-fit: cover; border-radius: 0; }
+  .gallery .media { margin: 0; }
+  .gallery .media img, .gallery .media video { max-height: 520px; object-fit: cover; }
+  .media.vid video { background: #000; }
+  .prose video, .d-cover video { cursor: pointer; }
+  .still a { display: block; position: relative; }
+  .still-play { position: absolute; left: 12px; bottom: 12px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 500; padding: 5px 11px; border-radius: var(--radius-pill); }
+  .prose p.note { background: var(--accent-soft); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 14.5px; }
+  .cmp-table { display: grid; grid-template-columns: 1.3fr repeat(4, 1fr); gap: 6px; margin: 16px 0 18px; font-size: 13px; text-align: center; }
+  .cmp-table > div { background: var(--bg); border-radius: var(--radius-sm); padding: 10px 8px; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+  .cmp-table > div.hl { color: var(--accent); font-weight: 600; }
+  .cmp-table > div:first-child { background: none; }
+  .cmp-table span { border-radius: var(--radius-sm); padding: 10px 0; font-size: 16px; }
+  .cmp-table span.y { background: var(--text); color: var(--bg); }
+  .cmp-table span.n { background: var(--bg); color: var(--muted); }
+  .cmp-table span.hl { background: var(--accent); color: #fff; }
+  .cmp-bars { background: var(--bg); border-radius: var(--radius-md); padding: 20px; margin: 16px 0 18px; display: flex; flex-direction: column; gap: 16px; }
+  .cmp-legend { display: flex; gap: 16px; font-size: 13px; color: var(--muted); }
+  .cmp-legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .cmp-legend .a::before { background: var(--accent); } .cmp-legend .b::before { background: var(--surface-2); }
+  .cmp-row { display: grid; grid-template-columns: 170px 1fr; gap: 6px 16px; align-items: center; }
+  .cmp-label { grid-row: span 2; font-size: 14px; font-weight: 500; }
+  .cmp-label em { display: block; font-style: normal; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .cmp-track { display: flex; align-items: center; gap: 10px; }
+  .cmp-track i { height: 14px; border-radius: 7px; display: block; }
+  .cmp-track i.a { background: var(--accent); } .cmp-track i.b { background: var(--surface-2); }
+  .cmp-track b { font-family: var(--mono); font-size: 12px; font-weight: 500; }
+  .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 14px 0 6px; }
+  .feat { background: var(--bg); border-radius: var(--radius-md); padding: 10px 10px 14px; outline: none; cursor: pointer; }
+  .feat-media { position: relative; aspect-ratio: 4/3; border-radius: calc(var(--radius-md) - 6px); overflow: hidden; background: var(--surface-2); }
+  .feat-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .35s var(--ease); }
+  .feat-media img.on { opacity: 0; }
+  .feat:hover .feat-media img.on, .feat:focus .feat-media img.on, .feat:focus-within .feat-media img.on { opacity: 1; }
+  .prose .feat h4 { margin: 12px 4px 2px; font-size: 14.5px; }
+  .prose .feat p { margin: 0 4px; font-size: 13px; color: var(--muted); line-height: 1.45; }
+  .feat:hover h4, .feat:focus h4 { color: var(--accent); }
+  .prose p.hover-hint { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-bottom: 0; }
+  @media (max-width: 720px) { .feat-grid { grid-template-columns: 1fr 1fr; } }
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 18px; }
+  .chart-card { background: var(--bg); border-radius: var(--radius-md); padding: 18px 18px 12px; margin: 16px 0 18px; }
+  .chart-grid .chart-card { margin: 0; }
+  .chart-card h4 { margin: 0 0 2px; font-size: 14px; font-weight: 600; }
+  .chart-card .sub { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .chart-card svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .chart-card svg text { font-family: var(--mono); font-size: 9.5px; fill: var(--muted); }
+  .chart-card svg text.v { fill: var(--text); font-weight: 500; }
+  .chart-card svg text.star { fill: var(--text); font-size: 12px; }
+  .chart-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+  .chart-legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .chart-legend i { width: 18px; height: 0; border-top: 2.5px solid var(--sw); display: inline-block; border-radius: 2px; }
+  .chart-legend i.dash { border-top-style: dashed; }
+  .chart-legend i.box { width: 10px; height: 10px; border: 0; border-radius: 3px; background: var(--sw); }
+  .kin-grid .chart-card svg { margin: 0 auto; }
+  .kin-video { display: block; width: 100%; max-height: 240px; object-fit: contain; margin: 0 auto; border-radius: 10px; cursor: pointer; }
+  .kin-legend { margin: -6px 0 18px; }
+  .kin-legend span:first-child { color: var(--text); }
+  .prose p.chart-key { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-top: -6px; }
+  @media (max-width: 640px) { .chart-grid { grid-template-columns: 1fr; } }
+  .quotes { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 6px; }
+  .quotes span { background: var(--bg); border-radius: var(--radius-pill); padding: 9px 16px; font-size: 14.5px; }
+  .media img, .media video { width: 100%; display: block; border-radius: var(--radius-md); background: var(--bg); }
+  .media figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 10px; letter-spacing: .02em; }
+  .media.missing::before {
+    content: "ADD MEDIA — " attr(data-short); display: grid; place-items: center; aspect-ratio: 16/8;
+    border-radius: var(--radius-md); background: var(--bg); font-family: var(--mono); font-size: 11.5px;
+    color: var(--muted); letter-spacing: .08em; padding: 16px; text-align: center; word-break: break-all;
+  }
+
+  .d-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+  .d-links a { background: var(--surface); padding: 12px 18px; border-radius: var(--radius-pill); font-size: 14px; font-weight: 500; transition: background .2s, color .2s; }
+  .d-links a:hover { background: var(--accent); color: #fff; }
+
+  .d-next {
+    margin: 48px 0 24px; background: var(--text); color: var(--bg); border-radius: var(--radius-lg);
+    padding: 32px 36px; display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    transition: transform .3s var(--ease);
+  }
+  .d-next:hover { transform: translateY(-4px); }
+  .d-next .label { color: color-mix(in srgb, var(--bg) 55%, transparent); }
+  .d-next h3 { font-size: clamp(24px, 3.4vw, 36px); letter-spacing: -.03em; font-weight: 600; margin-top: 6px; }
+  .d-next .arrow { background: var(--accent); width: 52px; height: 52px; }
+  .d-next .arrow svg { stroke: #fff; }
+
+  /* ---------- CROP TOOL ---------- */
+  .crop-clip { display: block; overflow: hidden; border-radius: var(--radius-md); }
+  body.crop-mode img:hover, body.crop-mode video:hover { outline: 2px dashed var(--accent); outline-offset: 2px; cursor: pointer; }
+  body.crop-mode .crop-selected { outline: 3px solid var(--accent) !important; outline-offset: 2px; cursor: grab; }
+  .crop-ui { font-family: var(--font); }
+  .crop-bar { position: fixed; left: 16px; bottom: 16px; z-index: 9999; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    background: var(--text); color: var(--bg); padding: 8px 8px 8px 16px; border-radius: var(--radius-pill); font-size: 13px; box-shadow: var(--shadow); }
+  .crop-ui button { border: none; cursor: pointer; font: 500 12.5px var(--font); padding: 7px 12px; border-radius: var(--radius-pill); background: var(--surface-2); color: var(--text); }
+  .crop-bar button { background: color-mix(in srgb, var(--bg) 15%, transparent); color: var(--bg); }
+  .crop-ui button.on, .crop-ui button.primary { background: var(--accent); color: #fff; }
+  .crop-panel { position: fixed; right: 16px; bottom: 16px; z-index: 9999; width: 300px; background: var(--bg); color: var(--text);
+    border-radius: var(--radius-lg); padding: 18px; box-shadow: 0 10px 40px rgba(0,0,0,.25); display: flex; flex-direction: column; gap: 12px; }
+  .crop-name { font-family: var(--mono); font-size: 11.5px; color: var(--muted); word-break: break-all; }
+  .crop-row label { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 500; margin-bottom: 6px; }
+  .crop-row label i { font-style: normal; font-family: var(--mono); color: var(--accent); }
+  .crop-row > div { display: flex; flex-wrap: wrap; gap: 6px; }
+  .crop-row input[type=range] { width: 100%; accent-color: var(--accent); }
+  .crop-hint { font-size: 12px; color: var(--muted); }
+  .crop-actions { display: flex; justify-content: space-between; gap: 8px; }
+  .crop-modal { position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,.45); display: grid; place-items: center; padding: 20px; }
+  .crop-modal > div { background: var(--bg); color: var(--text); border-radius: var(--radius-lg); padding: 22px; width: min(640px, 100%); display: flex; flex-direction: column; gap: 12px; }
+  .crop-modal h4 { font-size: 18px; } .crop-modal p { font-size: 13.5px; color: var(--muted); }
+  .crop-modal code { font-family: var(--mono); color: var(--accent); }
+  .crop-modal textarea { width: 100%; height: 260px; font: 12px var(--mono); border: none; border-radius: var(--radius-md); background: var(--surface); color: var(--text); padding: 12px; resize: vertical; }
+  .crop-ui [hidden], .crop-ui[hidden] { display: none !important; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px) {
+    .hero-grid, .contact { grid-template-columns: 1fr; }
+    .vitals { grid-template-columns: repeat(2, 1fr); }
+    .caps { grid-template-columns: 1fr; }
+    .principles, .learn { grid-template-columns: 1fr; }
+    .cap, .cap:nth-child(4), .cap:nth-child(5) { grid-column: auto; }
+    .project, .project.wide, .project.narrow { grid-column: span 6; }
+    .nav-links a { display: none; }
+    .exp-item { grid-template-columns: 1fr; gap: 6px; }
+    .exp-item .badge { justify-self: start; }
+    .d-meta { grid-template-columns: repeat(2, 1fr); }
+    .d-sec { grid-template-columns: 1fr; gap: 8px; padding: 26px; }
+    .gallery.g3 { grid-template-columns: repeat(2, 1fr); }
+    .cmp-row { grid-template-columns: 1fr; } .cmp-label { grid-row: auto; }
+    .cmp-table { font-size: 11px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     PERSONALIZE EVERYTHING HERE — the page builds itself from
+     this object. Swap text, add/remove projects, set images.
+     Media paths follow the folders your old site used:
+       thumbnails/…   community/<project>/…   content/<org>/…
+     Any image/video that can't be found shows an "ADD MEDIA"
+     placeholder with its filename, so you can see what's missing.
+     ========================================================= -->
+<script>
+/* =========================================================
+   CROP TOOL: open index.html?crop (or press Alt+Shift+C), click any image,
+   drag it or use the sliders, then "Copy code" and paste over the line below.
+   ========================================================= */
+const CROPS = {};
+
+/* =========================================================
+   HOW TO CROP ANY IMAGE OR VIDEO (by hand, in code)
+   Every media helper takes an optional crop object as its last argument:
+     { ratio: "16/9", pos: "50% 30%", fit: "cover", w: "480px" }
+       ratio  the box shape ("1/1", "4/3", "16/9", "9/16"…). Leave out to show the whole image.
+       pos    which part stays visible: "center", "top", "50% 20%" (x% y%). 0% = left/top.
+       fit    "cover" crops to fill the box (default), "contain" shows everything.
+       w      max width of the figure, e.g. "480px" (images only)
+   Examples:
+     fig(MOON + "final.jpg", "Caption", { ratio: "16/9", pos: "50% 70%" })
+     Card thumbnails:  imgPos: "50% 20%"   (in a project)
+     Cover images:     coverPos: "center top"   (in a project's detail)
+     Learning images:  imgPos: "center"   (in a learning item)
+   ========================================================= */
+const sty = o => (o && (o.ratio || o.pos || o.fit))
+  ? ` style="width:100%;${o.ratio ? `aspect-ratio:${o.ratio};` : ""}object-fit:${o.fit || "cover"};object-position:${o.pos || "center"}"` : "";
+/* fig(src, caption, crop) — an image or a silent looping clip */
+const fig = (src, cap = "", o) => {
+  const isVid = /\.(mp4|mov|webm)$/i.test(src);
+  const el = isVid
+    ? `<video src="${src}" autoplay muted loop playsinline${sty(o)}></video>`
+    : o && o.rot
+      ? `<div class="rot-box" style="aspect-ratio:${o.ratio}"><img src="${src}" alt="${cap.replace(/"/g, "")}" loading="lazy" style="width:${100 / eval(o.ratio)}%;height:${100 * eval(o.ratio)}%;transform:translate(-50%,-50%) rotate(${o.rot}deg)"></div>`
+      : `<img src="${src}" alt="${cap.replace(/"/g, "")}" loading="lazy"${sty(o)}>`;
+  return `<figure class="media" data-file="${src}"${o && o.w ? ` style="max-width:${o.w}"` : ""}>${el}${cap ? `<figcaption>${cap}</figcaption>` : ""}</figure>`;
+};
+/* vid(src, poster, caption, link, crop) — a video with sound and controls.
+   If the file isn't in the folder yet, it shows the poster image linking to the original post. */
+const vid = (src, poster, cap = "", href = "", o) => {
+  const fb = encodeURIComponent(href
+    ? `<a href="${href}" target="_blank" rel="noopener"><img src="${poster}" alt="" loading="lazy"${sty(o)}><span class="still-play">▶ Watch</span></a>`
+    : `<img src="${poster}" alt="" loading="lazy"${sty(o)}>`);
+  return `<figure class="media vid still" data-file="${src}"><video src="${src}" poster="${poster}" autoplay muted loop playsinline${sty(o)} data-fallback="${fb}"></video>${cap ? `<figcaption>${cap}</figcaption>` : ""}</figure>`;
+};
+/* wx(id) — a Wix-hosted image, served at a smaller size so it loads fast */
+const wx = (id, w = 1200) => `https://static.wixstatic.com/media/535c5f_${id}/v1/fit/w_${w},h_${w},al_c,q_80/img.jpg`;
+/* wxp(id) — the same, but keeps a PNG's transparent background */
+const wxp = (id, w = 900) => `https://static.wixstatic.com/media/535c5f_${id}/v1/fit/w_${w},h_${w},al_c/img.png`;
+/* gal(...) puts figures side by side; still(img, caption, link) is a video still that links out */
+const galCols = (cols, ...figs) => `<div class="gallery" style="grid-template-columns:${cols};align-items:end">${figs.join("")}</div>`;
+const gal = (...figs) => `<div class="gallery${figs.length >= 3 ? " g3" : ""}">${figs.join("")}</div>`;
+const still = (src, cap, href) => `<figure class="media still" data-file="${src}"><a href="${href}" target="_blank" rel="noopener"><img src="${src}" alt="${cap.replace(/"/g, "")}" loading="lazy"><span class="still-play">▶ Watch</span></a><figcaption>${cap}</figcaption></figure>`;
+const KIN = {"hv":[[0.79,0.78,0.74,0.68,0.61,0.52,0.44,0.38,0.35,0.36,0.4,0.45,0.51,0.55,0.57,0.57,0.56,0.53,0.5,0.46,0.42,0.39,0.37,0.37,0.38,0.4,0.43,0.46,0.49,0.51,0.54,0.56,0.57,0.57,0.56,0.55,0.54,0.52,0.5,0.48,0.46,0.45,0.44,0.43,0.42,0.41,0.39,0.38,0.38,0.37,0.36,0.35,0.34,0.33,0.33,0.34,0.35,0.37,0.4,0.42,0.46,0.5,0.55,0.58,0.63,0.67,0.72,0.76,0.79,0.8,0.81,0.81],[0.86,0.85,0.81,0.74,0.65,0.55,0.44,0.33,0.26,0.25,0.28,0.34,0.42,0.47,0.5,0.52,0.51,0.5,0.47,0.45,0.42,0.41,0.4,0.41,0.42,0.44,0.47,0.5,0.52,0.53,0.55,0.55,0.55,0.54,0.53,0.51,0.5,0.49,0.48,0.47,0.46,0.45,0.44,0.43,0.42,0.4,0.39,0.37,0.35,0.33,0.32,0.31,0.3,0.29,0.3,0.31,0.32,0.35,0.39,0.42,0.47,0.51,0.57,0.62,0.68,0.73,0.77,0.81,0.85,0.87,0.88,0.88],[0.94,0.94,0.9,0.84,0.75,0.65,0.52,0.39,0.26,0.17,0.17,0.23,0.32,0.38,0.43,0.46,0.46,0.45,0.43,0.41,0.39,0.38,0.38,0.39,0.41,0.43,0.46,0.49,0.52,0.54,0.54,0.55,0.54,0.53,0.52,0.5,0.49,0.48,0.46,0.46,0.45,0.44,0.44,0.43,0.42,0.4,0.38,0.36,0.34,0.31,0.29,0.26,0.24,0.23,0.22,0.23,0.24,0.27,0.31,0.36,0.41,0.47,0.53,0.6,0.67,0.73,0.8,0.86,0.89,0.92,0.94,0.94],[0.98,0.98,0.96,0.91,0.83,0.73,0.61,0.47,0.31,0.18,0.1,0.14,0.23,0.32,0.37,0.41,0.42,0.41,0.4,0.38,0.36,0.35,0.35,0.36,0.38,0.4,0.44,0.47,0.5,0.52,0.53,0.54,0.53,0.52,0.51,0.49,0.48,0.47,0.46,0.45,0.44,0.44,0.43,0.42,0.41,0.39,0.37,0.35,0.33,0.3,0.28,0.25,0.22,0.19,0.17,0.17,0.18,0.2,0.24,0.29,0.35,0.42,0.48,0.56,0.63,0.71,0.78,0.85,0.9,0.92,0.92,0.92],[1.0,1.0,0.98,0.94,0.87,0.78,0.66,0.52,0.37,0.22,0.1,0.09,0.18,0.27,0.34,0.37,0.39,0.39,0.37,0.35,0.33,0.32,0.32,0.33,0.35,0.38,0.42,0.45,0.48,0.51,0.52,0.53,0.52,0.51,0.5,0.49,0.47,0.46,0.45,0.44,0.44,0.43,0.43,0.42,0.41,0.39,0.36,0.34,0.31,0.28,0.26,0.23,0.21,0.18,0.15,0.13,0.14,0.16,0.2,0.25,0.31,0.38,0.45,0.53,0.6,0.68,0.76,0.83,0.89,0.94,0.96,0.96],[1.0,1.0,1.0,0.96,0.9,0.81,0.7,0.57,0.43,0.27,0.13,0.06,0.14,0.24,0.31,0.35,0.37,0.37,0.36,0.34,0.32,0.31,0.3,0.31,0.33,0.36,0.39,0.43,0.46,0.49,0.51,0.52,0.51,0.51,0.49,0.48,0.46,0.45,0.44,0.43,0.43,0.42,0.42,0.41,0.4,0.39,0.37,0.35,0.33,0.3,0.27,0.23,0.2,0.17,0.14,0.11,0.11,0.13,0.17,0.22,0.28,0.35,0.42,0.49,0.57,0.65,0.73,0.8,0.87,0.93,0.96,0.96]],"ea":[[115.1,115.1,114.8,114.3,113.7,112.9,111.9,110.8,109.4,107.8,105.9,103.9,101.6,99.2,96.8,94.3,91.8,89.5,87.4,85.6,83.9,82.4,81.2,80.1,79.1,78.3,77.5,76.7,75.9,75.2,74.5,73.8,73.1,72.6,72.2,72.0,72.0,72.1,72.4,73.0,73.7,74.6,75.6,76.8,78.0,79.4,80.7,82.1,83.8,85.4,87.0,88.7,90.4,92.2,94.0,95.8,97.7,99.6,101.4,103.2,104.9,106.6,108.2,109.6,110.9,112.1,113.1,113.9,114.5,115.0,115.2,115.3],[113.5,113.6,113.8,113.9,113.8,113.5,113.1,112.5,111.8,110.9,109.7,108.3,106.7,105.0,103.2,101.3,99.3,97.3,95.3,93.4,91.6,89.9,88.3,86.8,85.4,84.1,82.9,81.7,80.6,79.6,78.6,77.7,76.8,76.1,75.4,74.8,74.4,74.1,73.9,73.9,73.9,74.1,74.4,74.8,75.4,76.0,76.8,77.7,78.8,79.8,81.0,82.4,83.9,85.4,87.0,88.7,90.5,92.3,94.1,96.0,97.9,99.7,101.5,103.2,104.9,106.5,107.9,109.2,110.4,111.4,112.2,112.6],[108.9,109.2,109.8,110.4,110.8,111.0,111.2,111.1,110.9,110.5,110.0,109.3,108.4,107.3,106.0,104.5,103.0,101.5,99.9,98.3,96.8,95.2,93.7,92.3,90.9,89.5,88.3,87.1,85.9,84.8,83.7,82.6,81.6,80.7,79.9,79.2,78.5,77.9,77.4,77.1,76.8,76.6,76.5,76.5,76.7,76.9,77.3,77.7,78.2,78.8,79.6,80.4,81.4,82.6,83.7,84.8,86.1,87.5,89.0,90.5,92.1,93.7,95.3,96.9,98.5,100.1,101.6,103.0,104.4,105.7,106.8,107.6],[104.5,104.9,105.6,106.4,107.0,107.6,108.0,108.2,108.4,108.4,108.2,107.9,107.4,106.8,106.0,105.1,104.1,103.0,101.6,100.3,99.2,97.9,96.6,95.4,94.2,93.0,91.8,90.7,89.6,88.5,87.5,86.5,85.5,84.6,83.7,82.8,82.0,81.4,80.9,80.4,79.9,79.6,79.3,79.2,79.1,79.1,79.1,79.3,79.6,79.9,80.3,80.8,81.5,82.2,82.9,83.7,84.8,85.9,86.9,88.1,89.3,90.6,91.9,93.3,94.7,96.0,97.4,98.6,99.9,101.2,102.3,103.1],[101.3,101.7,102.5,103.3,104.0,104.6,105.1,105.5,105.8,105.9,106.0,105.9,105.7,105.4,104.9,104.3,103.6,102.7,101.9,101.0,99.9,98.8,97.8,96.8,95.7,94.8,93.8,92.8,91.8,90.9,89.9,89.0,88.1,87.2,86.4,85.6,84.8,84.2,83.6,83.1,82.6,82.2,81.8,81.5,81.3,81.2,81.1,81.1,81.2,81.4,81.7,82.0,82.4,82.9,83.4,84.1,84.7,85.4,86.2,87.3,88.4,89.3,90.3,91.4,92.6,93.8,94.9,96.0,97.1,98.2,99.3,100.1],[99.3,99.6,100.3,101.0,101.7,102.3,102.8,103.3,103.6,103.9,104.1,104.2,104.1,103.9,103.6,103.2,102.7,102.1,101.5,100.8,100.0,99.1,98.3,97.4,96.6,95.7,94.8,94.0,93.1,92.3,91.4,90.6,89.8,89.0,88.3,87.5,86.8,86.2,85.6,85.0,84.5,84.1,83.7,83.4,83.2,83.0,82.9,82.8,82.8,82.9,83.0,83.2,83.4,83.8,84.2,84.7,85.2,85.8,86.5,87.2,88.0,88.8,89.7,90.6,91.5,92.5,93.5,94.5,95.4,96.4,97.3,98.0]],"ev":[[-9.3,-13.3,-20.6,-28.2,-35.9,-44.1,-53.5,-64.1,-75.0,-87.0,-98.6,-109.1,-117.6,-123.0,-124.8,-123.1,-117.8,-109.9,-99.9,-88.8,-77.7,-67.2,-58.4,-51.4,-44.7,-41.3,-39.6,-38.7,-38.2,-37.5,-36.2,-33.6,-29.4,-23.4,-15.9,-7.3,3.2,13.0,22.9,32.3,40.9,48.3,54.6,60.2,64.7,68.5,71.8,75.0,77.4,80.0,82.6,85.1,87.4,89.5,91.1,92.0,92.3,91.5,89.8,87.6,84.3,79.6,74.1,67.2,59.9,52.3,43.3,34.0,25.1,15.7,6.6,0.1],[19.8,15.5,7.8,-0.0,-7.9,-16.1,-24.6,-33.7,-42.9,-53.2,-63.7,-73.7,-82.7,-90.3,-95.8,-99.2,-100.3,-99.6,-96.9,-92.7,-87.8,-82.9,-77.7,-72.8,-67.2,-63.0,-60.2,-57.3,-53.8,-51.1,-48.4,-44.3,-39.6,-35.2,-30.4,-25.3,-18.9,-12.5,-6.3,0.1,6.4,12.4,18.6,24.5,30.5,36.4,42.1,47.5,53.5,59.0,64.3,69.4,74.2,78.6,82.6,85.8,88.6,90.7,92.0,92.4,91.8,90.2,87.7,84.3,79.7,73.7,67.3,59.7,52.3,44.0,35.5,29.4],[39.0,36.3,30.2,23.4,16.4,8.9,1.5,-6.3,-14.6,-23.9,-33.3,-42.7,-51.7,-60.4,-67.4,-73.1,-77.1,-79.6,-80.3,-79.9,-78.4,-76.1,-73.4,-70.6,-67.9,-65.1,-62.7,-60.6,-58.4,-56.4,-54.4,-51.7,-47.8,-43.5,-38.9,-34.6,-30.3,-26.1,-21.2,-16.0,-11.0,-6.1,-1.0,4.1,9.0,14.0,18.9,24.0,29.8,34.6,39.6,44.7,49.8,54.6,59.1,63.5,67.6,71.2,74.3,76.9,79.0,80.2,80.7,80.4,79.1,76.8,73.6,69.7,65.0,59.0,54.9,54.9],[46.1,44.5,38.9,32.9,27.7,22.4,16.4,10.0,3.1,-4.3,-12.3,-20.6,-28.7,-36.6,-43.8,-50.2,-55.5,-59.4,-62.0,-63.4,-63.9,-63.6,-62.8,-61.6,-60.2,-58.8,-57.6,-56.4,-55.0,-53.6,-52.0,-50.1,-47.9,-45.6,-43.0,-39.7,-35.4,-30.7,-26.4,-22.8,-19.1,-15.0,-10.8,-6.6,-2.5,1.8,6.3,11.2,15.4,19.1,23.6,28.2,32.5,36.8,41.1,45.4,49.4,53.2,56.7,59.7,62.4,64.8,66.4,67.4,67.9,67.6,66.5,64.6,62.0,58.8,55.1,52.6],[44.4,43.2,40.2,36.5,31.6,25.8,21.2,16.6,11.5,5.7,-0.8,-7.6,-14.7,-21.6,-28.3,-34.1,-39.4,-43.6,-46.9,-49.3,-50.8,-51.5,-51.6,-51.6,-51.3,-50.8,-50.3,-49.7,-49.1,-48.3,-47.3,-46.2,-44.7,-42.7,-40.8,-38.6,-35.9,-33.2,-30.0,-25.5,-21.4,-18.0,-14.8,-11.5,-8.2,-4.8,-1.3,2.3,6.4,10.1,13.9,17.9,21.8,25.7,29.5,33.3,36.9,40.3,43.7,46.7,49.5,51.9,53.9,55.6,56.6,57.2,57.1,56.5,55.2,53.3,51.0,49.7],[41.0,40.1,37.5,34.4,31.1,27.6,23.9,19.8,15.3,10.4,5.2,-0.5,-6.4,-12.4,-18.2,-23.7,-28.4,-32.6,-36.0,-38.5,-40.5,-41.9,-42.7,-43.1,-43.3,-43.3,-43.3,-43.2,-43.1,-42.8,-42.3,-41.7,-40.7,-39.3,-37.8,-35.7,-33.5,-31.3,-28.7,-25.9,-23.1,-20.3,-17.3,-14.4,-11.4,-8.4,-5.3,-1.9,1.5,4.6,8.1,11.6,15.0,18.4,21.8,25.1,28.3,31.5,34.6,37.4,39.9,42.3,44.5,46.2,47.5,48.4,48.7,48.6,48.1,47.0,45.6,44.8]],"hp":[[[319,155],[308,130],[312,104],[328,84],[350,71],[370,60],[393,56],[414,57],[434,60],[451,66],[467,72],[480,80],[493,88],[505,97],[516,107],[528,118],[538,132],[549,147],[556,165],[560,186],[562,208],[561,233],[554,258],[516,269],[488,258],[466,247],[450,239],[438,232],[426,226],[416,220],[405,214],[394,209],[382,202],[366,194],[348,182],[328,166]],[[338,150],[316,127],[307,100],[315,76],[337,61],[363,55],[388,55],[409,58],[427,64],[443,69],[462,81],[474,88],[484,96],[494,104],[504,113],[514,124],[523,136],[531,150],[539,168],[542,187],[544,209],[545,236],[513,270],[479,251],[457,233],[442,222],[431,215],[422,209],[414,203],[406,198],[398,193],[388,187],[378,180],[365,171],[348,158]],[[357,142],[331,123],[308,94],[336,58],[365,58],[388,62],[407,67],[422,73],[435,79],[450,88],[459,94],[467,100],[474,106],[482,113],[491,121],[500,130],[509,142],[519,157],[527,176],[531,197],[533,224],[522,263],[474,227],[451,207],[434,194],[426,189],[420,184],[414,180],[408,176],[402,172],[396,168],[388,163],[379,157],[366,148]],[[383,143],[359,129],[317,98],[314,70],[339,60],[371,67],[394,72],[411,79],[424,85],[434,91],[450,102],[456,106],[462,111],[469,116],[475,122],[483,129],[490,138],[500,148],[510,163],[519,182],[526,206],[540,244],[497,230],[456,192],[444,186],[436,177],[430,173],[426,170],[422,167],[419,165],[415,163],[412,160],[408,158],[402,154],[395,150]],[[417,152],[404,144],[349,114],[316,72],[355,73],[385,78],[408,87],[425,95],[436,102],[448,112],[455,116],[460,120],[465,124],[470,128],[475,133],[480,138],[486,144],[493,151],[501,161],[511,174],[520,193],[530,220],[521,238],[461,182],[452,175],[447,171],[438,165],[436,163],[434,163],[432,162],[430,160],[427,158],[424,156]],[[429,152],[423,148],[364,120],[320,75],[361,78],[391,87],[412,95],[426,104],[436,110],[452,121],[456,124],[461,128],[465,131],[469,135],[474,139],[480,144],[486,150],[494,159],[506,172],[518,192],[529,219],[459,172],[450,164],[446,162],[444,162],[436,156],[435,155],[434,154],[432,153]]]};
+/* Kinematics charts: darker pink = more damping */
+const KOP = [.22, .36, .5, .64, .8, 1];
+const kinLine = (series, { ymin, ymax, ticks, fmt = v => v }) => {
+  const W = 300, H = 200, L = 34, R = 8, T = 8, B = 24, t0 = 0.1, t1 = 1.53;
+  const X = i => L + i / (series[0].length - 1) * (W - L - R);
+  const Y = v => T + (ymax - v) / (ymax - ymin) * (H - T - B);
+  const Xt = t => L + (t - t0) / (t1 - t0) * (W - L - R);
+  let g = `<line x1="${L}" y1="${H - B}" x2="${W - R}" y2="${H - B}" stroke="var(--muted)" stroke-opacity=".5"/>`;
+  ticks.forEach(t => g += `<text x="${L - 7}" y="${Y(t) + 3}" text-anchor="end">${fmt(t)}</text>`);
+  [0.5, 1, 1.5].forEach(t => g += `<text x="${Xt(t)}" y="${H - B + 14}" text-anchor="middle">${t}</text>`);
+  series.forEach((s, k) => g += `<polyline points="${s.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="${k === 5 ? 2.4 : 1.8}" stroke-opacity="${KOP[k]}" stroke-linejoin="round"/>`);
+  return `<svg viewBox="0 0 ${W} ${H}" role="img">${g}</svg>`;
+};
+const kinPath = () => {
+  const sh = [293, 505], el = [583, 563], hd = [532, 287];
+  let g = `<polyline points="${sh} ${el} ${hd}" fill="none" stroke="var(--muted)" stroke-opacity=".55" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>`;
+  [sh, el, hd].forEach(p => g += `<circle cx="${p[0]}" cy="${p[1]}" r="17" fill="var(--muted)" fill-opacity=".7"/>`);
+  KIN.hp.forEach((s, k) => g += `<polygon points="${s.map(p => p.join(",")).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="${k === 5 ? 5 : 4}" stroke-opacity="${KOP[k]}" stroke-linejoin="round"/>`);
+  return `<svg viewBox="262 36 344 548" role="img" style="max-height:240px">${g}</svg>`;
+};
+const armDiagram = () => `<svg viewBox="0 0 300 220" role="img" style="max-height:240px">
+  <path d="M190 150 L162 46 A106 106 0 0 0 112 182 Z" fill="var(--accent)" fill-opacity=".14"/>
+  <path d="M168 70 A82 82 0 0 0 115 160" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+  <polyline points="60,200 190,150 150,30" fill="none" stroke="var(--text)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="60" cy="200" r="7" fill="var(--text)"/>
+  <circle cx="190" cy="150" r="17" fill="none" stroke="var(--muted)" stroke-width="7"/><circle cx="190" cy="150" r="7" fill="var(--text)"/>
+  <circle cx="150" cy="30" r="17" fill="none" stroke="var(--muted)" stroke-width="7"/><circle cx="150" cy="30" r="7" fill="var(--text)"/>
+  <text class="v" x="178" y="34" style="font-size:13px">Hand</text>
+  <text class="v" x="216" y="155" style="font-size:13px">Elbow</text>
+  <text class="v" x="62" y="118" style="font-size:13px;fill:var(--accent)">Angle</text>
+</svg>`;
+/* Themed charts for the damping study (drawn in SVG with the site's colors, no grid lines) */
+const lineChart = ({ xs, series, ymin, ymax, xlabel, ylabel }) => {
+  const W = 420, H = 250, L = 34, R = 10, T = 8, B = 36;
+  const X = v => L + (v - xs[0]) / (xs[xs.length - 1] - xs[0]) * (W - L - R);
+  const Y = v => T + (ymax - v) / (ymax - ymin) * (H - T - B);
+  let g = `<line x1="${L}" y1="${H - B}" x2="${W - R}" y2="${H - B}" stroke="var(--muted)" stroke-opacity=".5" stroke-width="1"/>`;
+  xs.forEach(x => g += `<text x="${X(x)}" y="${H - B + 14}" text-anchor="middle">${x}</text>`);
+  for (let y = ymin; y <= ymax; y++) g += `<text x="${L - 8}" y="${Y(y) + 3}" text-anchor="end">${y}</text>`;
+  g += `<text x="${(L + W - R) / 2}" y="${H - 4}" text-anchor="middle">${xlabel}</text>`;
+  g += `<text transform="translate(9 ${(T + H - B) / 2}) rotate(-90)" text-anchor="middle">${ylabel}</text>`;
+  series.forEach(s => {
+    const pts = s.v.map((v, i) => `${X(xs[i]).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+    g += `<polyline points="${pts}" fill="none" stroke="${s.c}" stroke-width="${s.w || 2}" stroke-linecap="round" stroke-linejoin="round"${s.dash ? ` stroke-dasharray="5 5"` : ""}${s.o ? ` opacity="${s.o}"` : ""}/>`;
+    s.v.forEach((v, i) => g += `<circle cx="${X(xs[i])}" cy="${Y(v)}" r="${s.w ? 3.6 : 2.8}" fill="${s.c}"${s.o ? ` opacity="${s.o}"` : ""}><title>${s.n}: ${v.toFixed(2)}</title></circle>`);
+  });
+  const leg = series.map(s => `<span><i class="${s.dash ? "dash" : ""}" style="--sw:${s.c};${s.o ? `opacity:${s.o}` : ""}"></i>${s.n}</span>`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" role="img">${g}</svg><div class="chart-legend">${leg}</div>`;
+};
+const barChart = ({ bars, ymin, ymax, ticks, fmt = v => v, sig = [] }) => {
+  const W = 300, H = 240, L = 34, R = 6, T = 46, B = 26;
+  const Y = v => T + (ymax - v) / (ymax - ymin) * (H - T - B);
+  const slot = (W - L - R) / bars.length, bw = slot * 0.52;
+  const cx = i => L + slot * i + slot / 2;
+  let g = "";
+  ticks.forEach(t => g += `<text x="${L - 8}" y="${Y(t) + 3}" text-anchor="end">${fmt(t)}</text>`);
+  bars.forEach((b, i) => {
+    const y0 = Y(Math.max(0, b.m)), y1 = Y(Math.min(0, b.m)), x = cx(i) - bw / 2;
+    g += `<rect x="${x}" y="${y0}" width="${bw}" height="${Math.max(1, y1 - y0)}" rx="6" fill="${b.c}"${b.o < 1 ? ` opacity="${b.o}"` : ""}><title>${b.n}: ${fmt(b.m)} ± ${fmt(b.sd)}</title></rect>`;
+    g += `<line x1="${cx(i)}" y1="${Y(b.m + b.sd)}" x2="${cx(i)}" y2="${Y(b.m - b.sd)}" stroke="var(--text)" stroke-width="1.2" opacity=".55"/>`;
+    [b.m + b.sd, b.m - b.sd].forEach(v => g += `<line x1="${cx(i) - 5}" y1="${Y(v)}" x2="${cx(i) + 5}" y2="${Y(v)}" stroke="var(--text)" stroke-width="1.2" opacity=".55"/>`);
+    g += `<text class="v" x="${cx(i)}" y="${b.m >= 0 ? Y(b.m + b.sd) - 6 : Y(b.m - b.sd) + 13}" text-anchor="middle">${fmt(b.m)}</text>`;
+    g += `<text x="${cx(i)}" y="${H - 8}" text-anchor="middle">${b.n}</text>`;
+  });
+  g += `<line x1="${L}" y1="${Y(0)}" x2="${W - R}" y2="${Y(0)}" stroke="var(--muted)" stroke-opacity=".5" stroke-width="1"/>`;
+  sig.forEach(([a, b, stars, lv]) => {
+    const y = 14 + lv * 15;
+    g += `<path d="M${cx(a)} ${y + 5}V${y}H${cx(b)}V${y + 5}" fill="none" stroke="var(--text)" stroke-width="1" opacity=".5"/><text class="star" x="${(cx(a) + cx(b)) / 2}" y="${y - 2}" text-anchor="middle">${stars}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" role="img">${g}</svg>`;
+};
+const chartCard = (h, sub, svg) => `<div class="chart-card"><h4>${h}</h4>${sub ? `<div class="sub">${sub}</div>` : ""}${svg}</div>`;
+const COACH = [["None", "var(--muted)", .55], ["Hand", "var(--muted)", 1], ["Angle", "var(--accent)", 1]];
+const coachBars = vals => vals.map(([m, sd], i) => ({ n: COACH[i][0], c: COACH[i][1], o: COACH[i][2], m, sd }));
+const W = "https://static.wixstatic.com/media/535c5f_";
+const XT = "https://x.com/taliyahengineer/status/2121002000364224675";
+const TW = "https://pbs.twimg.com/";
+const A = "assets/";
+const MOON = A + "constellation/";
+const UT = A + "uterine/";
+const HAMR = A + "hamr-lab/";
+const HAND = A + "prosthetic-hand/";
+const DAMP = A + "damping/";
+const F_ = A + "framework-car-mod/";
+const JHBME = A + "cryoextract/";
+
+const PROFILE = {
+  firstName: "Taliyah",
+  lastName: "Huang",
+  initials: "TH",
+  photo: "assets/profile-web.webp",
+  title: "",
+  tagline: "designing for",
+  taglineAccent: "robotics, medical devices, and startups.",
+  lede: "I'm a recent biomedical engineering and computer science graduate with a love for mechanical design. I learn fast, adapt to whatever a team needs, and share what I learn along the way.",
+  status: "Open to roles",
+  location: "San Francisco, CA",
+  education: "Johns Hopkins University",
+  resumeUrl: "assets/Taliyah_Huang_CV.pdf",
+
+  vitals: [
+    { label: "Self-Motivated", num: "30", suffix: "+",  desc: "Personal projects initiated, from software tools and games to mechatronics" },
+    { label: "Dependable", num: "2",  suffix: "",   desc: "Seed and Series A medical device startups I interned at" },
+    { label: "Articulate", num: "2",  suffix: "",   desc: "International research conferences I presented at" },
+    { label: "Tenacious", num: "4",  suffix: " yrs", desc: "Founding and running a vending machine business as a college student" },
+  ],
+
+  /* ---------- CASE STUDIES ----------
+     size: "wide" (4/6), "narrow" (2/6) or "" (half). Each opens at #/work/<slug> */
+  projects: [
+    {
+      slug: "climbing-glove",
+      title: "Glove for a Rock Climber with Arthritis", size: "", category: "Personal", tag: "Assistive Tech",
+      img: "assets/climbing-glove/glove-trio.mp4", imgPoster: "assets/climbing-glove/glove-trio.jpg",
+      desc: "A wearable that boosts grip strength for a 60-year-old climber with arthritis. Badge-reel, spring, and body-powered prototypes so far.",
+      tools: ["CAD", "3D Printing"],
+      detail: {
+        subtitle: "Designing a wearable that gives back grip strength to a rock climber whose arthritis makes it hard to close his hands.",
+        org: "Personal project", role: "Designer & builder", when: "Nov 2026",
+        cover: "assets/climbing-glove/glove-trio.mp4", coverPoster: "assets/climbing-glove/glove-trio.jpg",
+        sections: [
+          { h: "The person", html: `
+            <p>At a networking event I met a 60-year-old who loves rock climbing, but mild arthritis in his hands makes it hard for him to fully close them and grip tightly. I took on the challenge of designing a wearable device that could increase his grip strength.</p>
+            ${fig(TW + "media/HW9QEKqbIAAVyDy?format=jpg&name=medium", "Climbing with a weak grip (not him!)")}` },
+          { h: "First idea: motors", html: `
+            <p>From building a motorized prosthetic hand, my first instinct was flex sensors that trigger motors to pull on tendons and bend the fingers.</p>
+            <p>But motors strong enough would be heavy and bulky, and so would their batteries. That's not ideal for a physical sport. More technical complexity also means more ways to break, and on a wall a failure could mean a fall.</p>
+            ${gal(vid(A + "climbing-glove/glove-1-motor-idea.mp4", TW + "amplify_video_thumb/2121002130240831490/img/FMwnwk4BHnVTvNSA.jpg", "Starting from my motorized prosthetic hand", XT),
+                  vid(A + "climbing-glove/glove-2-motor-tradeoffs.mp4", TW + "amplify_video_thumb/2121002540708048896/img/F1VJqnu5Y0yxrZmo.jpg", "Why motors were too heavy and risky", XT))}` },
+          { h: "Research", html: `
+            <p>I found a <a href="https://patents.google.com/patent/US9750290B2/en" target="_blank">patent</a> for a glove that uses a retractable mechanism to pull tendons along the fingers, but no real product seemed to exist. A research presentation I saw at the Cyborg and Bionic Systems conference (<a href="https://arxiv.org/pdf/2606.00397" target="_blank">paper</a>) inspired my finger design.</p>
+            ${gal(fig(TW + "media/HW9Qxota8AAb_VD?format=jpg&name=medium", "The retractable-tendon glove patent"),
+                  fig(TW + "media/HW9REM-a8AAjzUQ?format=jpg&name=medium", "Finger assemblies 3D printed in flexible TPU"))}` },
+          { h: "Prototyping", html: `
+            <ol>
+              <li><b>Badge reel:</b> I designed and 3D printed the finger assemblies in flexible TPU and threaded in a badge reel. As I expected, its pull was much too weak.</li>
+              <li><b>Printed springs:</b> several iterations of 3D-printed springs still didn't give a pull I could really feel. It also raised a new concern: would someone with arthritis struggle to open their hand against the spring?</li>
+              <li><b>Body-powered:</b> I made sections that strap to the wrist, elbow, and upper arm, so bending the elbow pulls a wire that closes the fingers. The motion still doesn't generate enough force at the fingertips to work the way I want.</li>
+            </ol>
+            ${gal(vid(A + "climbing-glove/glove-3-badge-reel.mp4", TW + "amplify_video_thumb/2121003475513614336/img/1523nu1znl-tGdni.jpg", "1. Badge reel", XT),
+                  vid(A + "climbing-glove/glove-4-printed-springs.mp4", TW + "amplify_video_thumb/2121003965374689280/img/1TQvTGbhYM8JCcRy.jpg", "2. Printed springs", XT),
+                  vid(A + "climbing-glove/glove-5-body-powered.mp4", TW + "amplify_video_thumb/2121005472237174784/img/NNzniQ9tViJGWDEM.jpg", "3. Body-powered", XT))}` },
+          { h: "Where it stands", html: `
+            <p>This is an open problem I'm still working on. Every version taught me something about the trade-off between force, weight, and safety. I shared the full process and my CAD files publicly so others can give feedback or build on it.</p>` },
+        ],
+        links: [["Full thread on X", XT], ["Video series on Instagram", "https://www.instagram.com/taliyahengineering/reel/DfVkCduPdie/"], ["CAD files on Printables", "https://www.printables.com/search/models?q=Glove%20for%20a%20Rock%20Climber%20with%20Arthritis"]],
+      },
+    },
+    {
+      slug: "framework-car-mod",
+      title: "Framework Car Mod", size: "", category: "Personal", tag: "Product Design",
+      img: "assets/framework-car-mod/framework-cover.mp4", imgPoster: "assets/framework-car-mod/cover.jpg",
+      desc: "My Framework laptop turned RC car: 519K views, a shoutout from Framework's CEO, 1 of 6 honorable mentions out of 173 Printables contest entries, and 2nd place at Hack the Feed.",
+      tools: ["CAD", "3D Printing", "Arduino"],
+      detail: {
+        subtitle: "Turning my modular Framework laptop into an RC car, then into a robot cameraman.",
+        org: "Personal project", role: "Designer & builder", when: "Sep — Nov 2026",
+        cover: "assets/framework-car-mod/framework-cover.mp4", coverPoster: "assets/framework-car-mod/cover.jpg", coverPos: "center",
+        sections: [
+          { h: "Background", html: `
+            <p>In 2024, Framework's founder and CEO Nirav Patel discovered the builds on my YouTube channel and gifted me a Framework laptop, which I <a href="https://www.youtube.com/watch?v=AJlgPpAQshM&t=9s" target="_blank">built and documented on YouTube</a>. Framework laptops are modular and made to be repaired and modified, which makes them a fun platform to hack on. When Founders Inc. hosted a silly robots contest, I decided to make my laptop drive.</p>` },
+          { h: "Design & build", html: `
+            <p>I designed the mounts in CAD and 3D printed them, then attached an Arduino and hobby gear motors with wheels to the laptop. I published the files on Printables as the <a href="https://www.printables.com/model/1831377-framework-rc-car-mod-butterfly-mainboard-stand" target="_blank">Framework RC Car Mod / Butterfly Mainboard Stand</a> so anyone can build their own.</p>
+            ${fig(F_ + "laptop-car.webp", "The finished car: gear motors on each side, driven by an Arduino plugged in over USB", { fit: "contain", w: "640px" })}` },
+          { h: "CAD", html: `
+            <p>I modeled everything in Onshape around the Framework Laptop 12 mainboard. The Butterfly Mainboard Stand holds the bare mainboard like a tiny laptop, and the drive parts are shaped like Framework expansion cards, so they slot into the same bays as the laptop's USB and HDMI cards.</p>
+            ${gal(fig(F_ + "cad-render-butterfly.webp", "The full assembly: stand, wheels, and motor housings", { fit: "contain", ratio: "1/1" }),
+                  fig(F_ + "cad-render-open.webp", "The mainboard sitting in the stand, with the motors and wheels on each side", { fit: "contain", ratio: "1/1" }))}
+            ${fig(F_ + "cad-expansion-cards.webp", "Expansion card parts from the Printables files: left and right motor housings, the Arduino card, and the motor board card", { fit: "contain" })}` },
+          { h: "Hack the Feed", html: `
+            <p>Hack the Feed was a creator tools hackathon in San Francisco, hosted by Oriane with GMI Cloud and Lovable at Amplitude's headquarters. Teams had one weekend to build AI tools that help content creators make better videos.</p>
+            <p>I started with users: I messaged 25 content creators and asked what they hate most about filming their projects. Five wrote back, with three problems in common:</p>
+            <ul>
+              <li>Stopping mid-build to move the tripod</li>
+              <li>Ending up with way too much footage to sort through</li>
+              <li>Forgetting to film key steps</li>
+            </ul>
+            <p>Instead of picking one, I built a tool for each:</p>
+            <ul>
+              <li><b>Rover Cam:</b> the car mod became a robot cameraman. It follows your face, takes voice commands, and watches for hand signs to zoom, pan, and start or stop recording, so you never have to adjust a tripod.</li>
+              <li><b>BuildRoll:</b> every take syncs straight to your phone, where GMI Cloud sorts it into project folders and lets you search for any clip in plain English.</li>
+              <li><b>Missing Beat:</b> uses Oriane's viral video data to plan your shot list, then checks your footage for anything you missed.</li>
+            </ul>
+            <p>All three run on Lovable. The project placed 2nd.</p>
+            ${gal(fig(F_ + "robot-cameraman-build.mp4", "I built a robot cameraman", { ratio: "9/16" }),
+                  fig(F_ + "hackthefeed-epilogue.mp4", "Hack the Feed: the epilogue", { ratio: "9/16" }))}` },
+          { h: "Awards", html: `
+            <ul>
+              <li><b>1 of 6 honorable mentions out of 173 entries</b> in the Printables Framework Laptop 12 Mainboard contest</li>
+              <li><b>A shoutout from Nirav Patel, Framework's founder and CEO</b>, who highlighted the car mod design during a livestream with Intel</li>
+              <li><b>2nd place and $500 at Hack the Feed</b> for Rover Cam, BuildRoll, and Missing Beat</li>
+            </ul>
+            ${gal(fig(F_ + "framework-ceo-shoutout.mp4", "Framework CEO Nirav Patel giving the car mod a shoutout", { ratio: "9/16" }),
+                  fig(F_ + "framework-foundersinc.mp4", "The upgrade for the Founders Inc. silly robots contest", { ratio: "9/16" }))}` },
+        ],
+        links: [["Files on Printables", "https://www.printables.com/model/1831377-framework-rc-car-mod-butterfly-mainboard-stand"], ["Watch the reel (519K views)", "https://www.instagram.com/taliyahengineering/reel/DdpGmNVyH-t/"], ["Hack the Feed reel", "https://www.instagram.com/taliyahengineering/reel/Dfcxudyh_Jo/"], ["Hack the Feed thread on X", "https://x.com/taliyahengineer/status/2119132269202043073"], ["Hack the Feed recap", "https://www.instagram.com/taliyahengineering/reel/DfsnOT4Stoa/"]],
+      },
+    },
+    {
+      slug: "visual-perception-of-damping",
+      title: "Visual Perception of Damping", size: "narrow", category: "Research", tag: "Perception Research",
+      img: DAMP + "setup.jpg",
+      desc: "Can people see damping just by watching a limb move, and can coaching help? A 30-participant study and first-author paper, now under review at Scientific Reports.",
+      tools: ["MATLAB", "Python", "Eye-Tracking"],
+      detail: {
+        subtitle: "Showing that people can see damping in a moving arm from vision alone, and that a 2-minute coaching video telling them where to look makes them significantly better at it.",
+        org: "HAMR Lab, Johns Hopkins", role: "Undergraduate Researcher · first author", when: "Feb 2025 — Dec 2025 · 11 mos",
+        cover: DAMP + "ncm-poster.jpg", coverRatio: "4/3",
+        sections: [
+          { h: "The question", html: `
+            <p>People are surprisingly good at reading hidden properties from motion. Earlier work showed observers can visually estimate a limb's <i>stiffness</i>, even though stiffness is a force-displacement relationship (F = kx) that can't technically be recovered from motion alone.</p>
+            <p><i>Damping</i> is another hidden property: a resistance proportional to velocity (F = bv). I asked three questions:</p>
+            <ol>
+              <li>Can people innately estimate differences in limb damping from vision alone?</li>
+              <li>Can coaching change where and how they look?</li>
+              <li>Does targeted coaching make their estimates more accurate?</li>
+            </ol>
+            <p>This matters wherever people judge dynamics by eye, such as physical therapists assessing muscle spasticity after a stroke, or surgeons judging tissue through a robot with little force feedback.</p>` },
+          { h: "Study design", html: `
+            <p>30 participants watched simulated two-link arms, which I generated with a custom MATLAB model, at six elbow damping levels from 0 to 10 N·m·s/rad. They rated how damped each arm looked on a 1–7 scale, over two sessions of 30 trials. Between sessions, each participant watched one of three 2-minute coaching videos:</p>
+            <ul>
+              <li><b>No coaching</b></li>
+              <li><b>Hand coaching:</b> watch how the hand's speed changes</li>
+              <li><b>Angle coaching:</b> watch how fast the elbow angle opens and closes</li>
+            </ul>
+            ${gal(fig(DAMP + "coaching-hand.mp4", "Clip from the hand coaching video"),
+                  fig(DAMP + "coaching-angle.mp4", "Clip from the angle coaching video"))}
+            <p>Participants also completed NASA-TLX workload ratings and reported where they looked and which motion features they used. Here is one trial, and the motion participants saw at each damping level:</p>
+            <div class="chart-grid kin-grid">
+              ${chartCard("One trial in the MATLAB study app", "watch the arm, then rate its damping 1–7", `<video src="${DAMP}study-trial.mp4" autoplay muted loop playsinline class="kin-video"></video>`)}
+              ${chartCard("Where participants could look", "the three locations rated on the survey", armDiagram())}
+              ${chartCard("Hand path", "two-link arm · one full motion", kinPath())}
+              ${chartCard("Hand speed", "m/s over time (s)", kinLine(KIN.hv, { ymin: -0.1, ymax: 1.1, ticks: [0, 0.25, 0.5, 0.75, 1], fmt: v => v.toFixed(2) }))}
+              ${chartCard("Elbow angle", "degrees over time (s)", kinLine(KIN.ea, { ymin: 68, ymax: 120, ticks: [70, 80, 90, 100, 110, 120] }))}
+              ${chartCard("Elbow angular velocity", "deg/s over time (s)", kinLine(KIN.ev, { ymin: -135, ymax: 105, ticks: [-100, -50, 0, 50, 100] }))}
+            </div>
+            <div class="chart-legend kin-legend"><span>Simulated damping (N·m·s/rad)</span>${[0, 2, 4, 6, 8, 10].map((v, i) => `<span><i style="--sw:var(--accent);opacity:${KOP[i]}"></i>${v}</span>`).join("")}</div>` },
+          { h: "Eye tracking", html: `
+            <p>To see where people actually looked, not just where they said they looked, participants wore eye-tracking glasses during both sessions. Each frame, the gaze point was classified as being on the hand, on the elbow, or neither, so I could compare attention before and after coaching.</p>
+            ${gal(fig(HAMR + "IMG_9094.mp4", "The eye cameras tracking both pupils during a session"),
+                  fig(DAMP + "eyetracking-study.mp4", "The eye tracker's view: the gaze point and its distance to the hand and elbow, measured every frame"))}` },
+          { h: "People can see damping", html: `
+            <p>Even before any coaching, participants' ratings rose reliably with the true damping level (significant main effect of damping, p &lt; .001). People can perceive changes in arm damping from motion alone, likely by drawing on their own internal models of movement.</p>
+            ${chartCard("Perceived vs. simulated damping", "mean rating · 30 participants", lineChart({
+              xs: [0, 2, 4, 6, 8, 10], ymin: 1, ymax: 7, xlabel: "simulated damping (N·m·s/rad)", ylabel: "perceived damping (1–7)",
+              series: [
+                { n: "Session 1 (before coaching)", c: "var(--text)", dash: true, o: .45, v: [3.05, 3.26, 3.81, 4.65, 5.01, 5.19] },
+                { n: "No coaching", c: "var(--muted)", o: .6, v: [2.10, 2.64, 3.34, 4.56, 5.44, 5.72] },
+                { n: "Hand coaching", c: "var(--text)", v: [2.26, 3.20, 4.14, 5.32, 5.64, 5.84] },
+                { n: "Angle coaching", c: "var(--accent)", w: 3, v: [1.70, 2.58, 4.08, 5.28, 5.70, 6.38] },
+              ] }))}` },
+          { h: "Coaching changes where people look", html: `
+            <p>Coaching shifted participants' attention exactly where it pointed: hand coaching increased focus on the hand, and angle coaching increased focus on the elbow angle by about 55 percentage points. It didn't change which motion features they reported using (displacement, velocity, acceleration, or jerk). Participants followed <i>where</i> to look, but not <i>what</i> to look for.</p>
+            <div class="chart-grid">
+              ${chartCard("Attention on the hand", "change in rated attention · pts · mean ± SD", barChart({ bars: coachBars([[4, 30.8], [32, 30.8], [-9.5, 21.4]]), ymin: -40, ymax: 100, ticks: [-25, 0, 25, 50, 75], sig: [[1, 2, "**", 0]] }))}
+              ${chartCard("Attention on the elbow angle", "change in rated attention · pts · mean ± SD", barChart({ bars: coachBars([[8, 27.9], [-14, 16.6], [54.5, 34.1]]), ymin: -40, ymax: 100, ticks: [-25, 0, 25, 50, 75], sig: [[0, 2, "**", 0], [1, 2, "***", 1]] }))}
+            </div>` },
+          { h: "Angle coaching improves accuracy most", html: `
+            <ul>
+              <li><b>Consistency (R²):</b> the angle coaching group improved by 0.53 on average, vs. 0.24 for hand coaching and 0.17 for no coaching. They reached an average R² of 0.82 in session 2.</li>
+              <li><b>Accuracy (slope):</b> the angle coaching group improved by 0.35, vs. 0.14 for hand coaching and 0.05 for no coaching.</li>
+            </ul>
+            <div class="chart-grid">
+              ${chartCard("Consistency · ΔR²", "session 2 − session 1 · mean ± SD", barChart({ bars: coachBars([[0.17, 0.15], [0.24, 0.33], [0.53, 0.25]]), ymin: -0.15, ymax: 0.85, ticks: [0, 0.25, 0.5, 0.75], fmt: v => v.toFixed(2), sig: [[0, 2, "*", 0], [1, 2, "*", 1]] }))}
+              ${chartCard("Accuracy · Δslope", "session 2 − session 1 · mean ± SD", barChart({ bars: coachBars([[0.05, 0.07], [0.14, 0.18], [0.35, 0.23]]), ymin: -0.1, ymax: 0.65, ticks: [0, 0.2, 0.4, 0.6], fmt: v => v.toFixed(2), sig: [[0, 2, "**", 0]] }))}
+            </div>
+            <p class="chart-key">Whiskers show ±1 SD. * p &lt; .05 · ** p &lt; .01 · *** p &lt; .001</p>
+            <p>The takeaway: brief, automated coaching that directs attention to the most informative cue can speed up learning to perceive hidden dynamics. That points toward faster training for physical therapists, support for remote care, and sharper judgment for surgeons using robots with limited force feedback.</p>` },
+          { h: "My role", html: `
+            <p>I co-designed the study with my co-authors, ran all the experiments, analyzed the data, and prepared the figures with Dr. A. Michael West Jr., and drafted the manuscript.</p>` },
+          { h: "Publication & presentations", html: `
+            <ul>
+              <li><b>Perceiving latent dynamics: Innate and coachable visual estimation of limb damping</b>, by Taliyah Huang, Meghan E. Huber, Jeremy D. Brown and A. Michael West Jr. First-author manuscript currently under review at <i>Nature Scientific Reports</i>; <a href="https://www.biorxiv.org/content/10.64898/2026.03.02.708982v1" target="_blank">preprint on bioRxiv</a></li>
+              <li>Poster at the 2026 Neural Control of Movement Conference in Kobe, Japan</li>
+              <li>Poster at the 2025 Malone Healthcare Symposium</li>
+            </ul>
+            ${gal(fig(DAMP + "ncm-kobe-poster.jpg", "My poster at the 2026 Neural Control of Movement Conference in Kobe, Japan", { ratio: "3/4", pos: "center 40%" }),
+                  fig(HAMR + "poster.jpg", "Presenting at the 2025 Malone Healthcare Symposium", { ratio: "3/4" }))}` },
+        ],
+        links: [["Preprint on bioRxiv", "https://www.biorxiv.org/content/10.64898/2026.03.02.708982v1"], ["HAMR Lab", "https://hamrlab.lcsr.jhu.edu"]],
+      },
+    },
+    {
+      slug: "ball-jointed-prosthetic-hand",
+      title: "Ball-Jointed Prosthetic Hand", size: "wide", category: "Research", tag: "Prosthetics",
+      img: "assets/thumbnails/prosthetic.jpg",
+      desc: "TAPH-F, a flexible, ball-jointed, tendon-actuated hand printed in TPU that achieves every grasp type in a standard grasp taxonomy. Presented in Germany.",
+      tools: ["CAD", "3D Printing", "MATLAB / Simulink"],
+      detail: {
+        subtitle: "Designing TAPH-F, a Flexible Tendon Actuated Prosthetic Hand, with passive ball-jointed knuckles and a compliant TPU body, so it adapts to objects like a real hand without adding actuators or control complexity.",
+        org: "HAMR Lab, Johns Hopkins", role: "Undergraduate Researcher · co-author", when: "Jan 2026 — Sep 2026 · 9 mos",
+        cover: HAND + "hand-cover.jpg", coverPos: "center 40%",
+        sections: [
+          { h: "Motivation", html: `
+            <p>Upper-limb prosthetic hands keep getting more anthropomorphic, but natural adaptation to objects during grasping is still a challenge. A human hand combines coordinated joint motion with built-in compliance, so the fingers passively wrap around an object, spread contact forces, and hold a stable grasp. Rigid prosthetic hands lack that compliance, which limits contact area and grasp stability in everyday activities.</p>
+            ${fig(HAND + "motivation.jpg", "Our tendon-actuated modular prosthesis setup, with the earlier rigid hand")}` },
+          { h: "From TAPH to TAPH-F", html: `
+            <p>The lab's earlier Tendon Actuated Prosthetic Hand (TAPH) replicated human tendon routing and joint kinematics, but its knuckle (MCP) joints were rigid. That blocked side-to-side finger motion and limited how well it could conform to objects. TAPH-F fixes this through the shape and material of the hand itself:</p>
+            <ul>
+              <li><b>Passive MCP joints:</b> each knuckle is a constrained ball-and-socket joint placed at its anatomically derived center of rotation from the lab's HAMR reconstruction process. A guide channel in the palm keeps flexion and extension on track, while built-in clearance lets each finger spread passively, tuned to its natural range of motion.</li>
+              <li><b>Compliant material:</b> the whole hand is printed in TPU (NinjaTek Chinchilla, Shore 75A). It deforms locally to conform to surfaces while staying stiff enough for tendon-driven actuation.</li>
+              <li><b>Self-restoring fingers:</b> the TPU's elasticity works with the passive joints to return the fingers to neutral after they spread, with no springs, extra sensors, actuators, or control inputs.</li>
+            </ul>
+            ${fig(HAND + "taph-evolution.jpg", "The evolution from the rigid PLA TAPH to the compliant TPU TAPH-F, and the passive ball-and-socket MCP joint")}
+            ${gal(fig(HAND + "design-annotated.jpg", "Flexion and extension tendon lines, pins, ball joints, the thumb's circumduction axis, and a whippletree"),
+                  fig(HAND + "build.jpg", "Printed finger and joint components"))}` },
+          { h: "Building & controls", html: `
+            <p>Before the ball-jointed design, I built an EMG-controlled flexible hand and a Simulink program to drive it. That gave me a working control pipeline for the new hand's motors.</p>
+            ${gal(fig(HAMR + "IMG_0163.mp4", "EMG-controlled flexible hand"),
+                  fig(HAMR + "hand.mp4", "Wiring up the ball-jointed hand"))}
+            ${fig(HAND + "controls-models.jpg", "Simulink models and motor voltage traces")}` },
+          { h: "Grasp taxonomy", html: `
+            <p>We tested TAPH-F on representative grasps adapted from the Cutkosky manufacturing grasp taxonomy and later prosthetic-hand benchmarks, using a representative object for each grasp. Unlike earlier TAPH versions, which were limited by rigid finger alignment, TAPH-F achieved every grasp in the taxonomy, across both power and precision grasps.</p>
+            ${fig(HAND + "grasp-taxonomy.jpg", "Every grasp in the adapted Cutkosky taxonomy, achieved by TAPH-F")}` },
+          { h: "Contact pressure", html: `
+            <p>To measure how the passive joints change contact, we wrapped multilayer piezoresistive force sensor arrays around a cylindrical object and recorded where and how hard the hand pressed during a grasp. Instead of concentrating force at a few isolated points, passive finger spreading increased the contact area and produced a more evenly distributed grasp.</p>
+            ${fig(HAND + "pressure-setup.jpg", "Pressure mapping setup and average pressure per sensor cell during a cylindrical grasp")}
+            ${gal(fig(HAND + "tension-tests.jpg", "Tendon tension tests: open (extend) and close (flex)"),
+                  fig(HAND + "pick-up-objects.jpg", "Picking up everyday objects"))}` },
+          { h: "Functional tasks", html: `
+            <p>We ran three standardized manipulation tasks developed in our lab, increasing in complexity. The added compliance had little effect on dexterity-focused tasks like block transfer and checker transfer and stacking. In carton transfer and pour, TAPH-F was noticeably more stable, because the spreading fingers conformed to the carton's rectangular shape and kept a more secure grip throughout.</p>
+            ${gal(vid(HAND + "task-box-and-blocks.mp4", HAND + "task-box-and-blocks.jpg", "Box and blocks"),
+                  vid(HAND + "task-checker-transfer.mp4", HAND + "task-checker-transfer.jpg", "Checker transfer and stack"),
+                  vid(HAND + "task-carton-pour.mp4", HAND + "task-carton-pour.jpg", "Carton transfer and pour"))}` },
+          { h: "Results & next steps", html: `
+            <ul>
+              <li><b>Wider grasp range:</b> passive MCP joints and compliant material let TAPH-F achieve every grasp in the adapted Cutkosky taxonomy.</li>
+              <li><b>Better contact:</b> passive spreading spread pressure more evenly across the fingers.</li>
+              <li><b>More stable handling</b> of larger objects like cartons, without adding actuators or controller complexity.</li>
+              <li><b>The trade-off:</b> compliance reduces force transmission through the tendons, which limits maximum grip force on heavier objects.</li>
+            </ul>
+            <p>Together, these results show that the hand's morphology alone can improve how a prosthesis interacts with objects. Next steps include localized stiffness tuning and hybrid materials to balance compliance with force for heavier objects, plus long-term durability testing.</p>` },
+          { h: "Presenting & sharing", html: `
+            <p>I presented our work, <b>Compliant Morphology Enables Adaptive Grasping in a Tendon-Driven Prosthetic Hand</b> (Lorena Velásquez, Taliyah Huang, Jeremy D. Brown), at the 2026 Cyborg and Bionic Systems conference in Germany. The research was supported by the National Science Foundation (grant #2146206).</p>
+            ${gal(fig(HAND + "hand-demo.jpg", "Letting a visitor try out the hand at a HAMR Lab demo", { ratio: "3/4", pos: "70% center" }),
+                  fig(HAND + "outreach.jpg", "I also bring the hand to youth STEM outreach events", { ratio: "3/4", pos: "60% center" }))}` },
+        ],
+        links: [["HAMR Lab", "https://hamrlab.lcsr.jhu.edu"]],
+      },
+    },
+    {
+      slug: "lung-cryobiopsy-device",
+      title: "CryoExtract", size: "wide", category: "Research", tag: "Medical Device",
+      img: "assets/thumbnails/designteam.jpg",
+      desc: "Led 8 students to design ICOR, a device that removes frozen lung biopsy samples faster and with larger sample sizes than the current tool.",
+      tools: ["CAD", "3D Printing", "Design Controls"],
+      detail: {
+        subtitle: "A novel device for streamlining tissue retrieval in lung cryobiopsy, designed by a student team I led through the full design-controls process.",
+        org: "Johns Hopkins Biomedical Engineering", role: "Design Team Leader & Project Manager", when: "Aug 2024 — May 2025 · 10 mos",
+        cover: JHBME + "dday.jpg",
+        sections: [
+          { h: "Background", html: `
+            <p>About 100,000 people are diagnosed with interstitial lung diseases (ILD) each year in the U.S., and lung cancer remains the leading cause of cancer deaths. Lung cryobiopsy is a promising diagnostic technique that uses freezing-cold carbon dioxide gas to preserve and extract a high-quality tissue sample through the patient's natural airway.</p>
+            <div class="cmp-table">
+              <div></div><div>Low complication risk</div><div>Cost & time effective</div><div>Large sample size</div><div>Damage-free samples</div>
+              <div>Forceps biopsy</div><span class="y">✓</span><span class="y">✓</span><span class="n">✗</span><span class="n">✗</span>
+              <div>Surgical biopsy</div><span class="n">✗</span><span class="n">✗</span><span class="y">✓</span><span class="y">✓</span>
+              <div class="hl">Cryobiopsy</div><span class="y hl">✓</span><span class="y hl">✓</span><span class="y hl">✓</span><span class="y hl">✓</span>
+            </div>
+            <p>Cryobiopsy offers the best of forceps and surgical biopsies without the trade-offs.</p>` },
+          { h: "The problem", html: `
+            <p>One challenge is slowing wider adoption: removing the extracted tissue from the frozen cryoprobe tip. Today, clinicians either shake the probe aggressively in formalin solution or scrape it with a small hand-held tool called a notched fork. Pulmonologists told us both are inefficient and time-consuming, and with 15–20 samples taken per procedure, the frustration adds up.</p>
+            ${gal(fig(JHBME + "cryoextract-sample-on-probe.jpg", "A tissue sample frozen to the cryoprobe tip", { ratio: "1/1" }),
+                  fig(JHBME + "cryoextract-notched-fork.jpg", "Removing a sample with the notched fork takes both hands and a table", { ratio: "1/1" }),
+                  fig(JHBME + "cryoextract-fork-tool.jpg", "The notched fork", { ratio: "1/1" }))}` },
+          { h: "Clinical immersion", html: `
+            <p>I led a team of 8 students, with clinical mentors Dr. Lonny Yarmus, Dr. Jeffrey Thiboutot and Dr. Christopher Kapp and course mentors Dr. Elizabeth Logsdon and Ethan Wu. We observed cryobiopsy procedures and interviewed pulmonologists, nurses, and pathologists at the Johns Hopkins Hospital, then mind-mapped our observations into needs.</p>
+            ${fig(JHBME + "mindmap.mp4", "Mind-mapping observations to find needs")}` },
+          { h: "User needs", html: `
+            <ul>
+              <li><b>Reliable:</b> no damage to the tissue and no safety concerns for patient or user</li>
+              <li><b>Efficient:</b> extracts tissue samples in few attempts</li>
+              <li><b>Universally compatible</b> with all cryoprobe types and sample container sizes</li>
+              <li><b>Easy to use:</b> minimal complexity and no added steps to the existing workflow</li>
+              <li><b>Affordable:</b> keeps or reduces the cost of the procedure</li>
+            </ul>` },
+          { h: "Our solution: ICOR", html: `
+            <p>ICOR is a novel device that fits into the existing cryobiopsy workflow and adds negligible cost, while making sample removal faster and more convenient. My work on it covered mechanical design, CAD, and 3D printing of prototypes, plus running the team's logistics and quality-checking our design-controls documentation.</p>
+            <p class="note">ICOR is going through the patent process, so its drawings are blurred here.</p>
+            ${fig(JHBME + "patent.jpg", "ICOR patent drawings (blurred while the patent is pending)", { fit: "contain", w: "720px" })}` },
+          { h: "Testing & results", html: `
+            <p>We compared ICOR against the notched fork on specimens of increasing realism: preserved pig lungs (March 27, 2025), a live pig experiment (April 8, 2025), and human patient procedures (April 2, 16, and 18, 2025). ICOR removed samples with fewer attempts and in less time, while preserving larger samples.</p>
+            <div class="cmp-bars">
+              <div class="cmp-legend"><span class="a">ICOR</span><span class="b">Notched fork</span></div>
+              <div class="cmp-row"><div class="cmp-label">Avg. scrapes per sample<em>lower is better</em></div>
+                <div class="cmp-track"><i class="a" style="width:${1.67/9.5*100}%"></i><b>1.67</b></div>
+                <div class="cmp-track"><i class="b" style="width:${6/9.5*100}%"></i><b>6.00</b></div></div>
+              <div class="cmp-row"><div class="cmp-label">Avg. seconds per sample<em>lower is better</em></div>
+                <div class="cmp-track"><i class="a" style="width:${4.67/9.5*100}%"></i><b>4.67</b></div>
+                <div class="cmp-track"><i class="b" style="width:100%"></i><b>9.50</b></div></div>
+              <div class="cmp-row"><div class="cmp-label">Avg. sample size (mm²)<em>higher is better</em></div>
+                <div class="cmp-track"><i class="a" style="width:${8.06/9.5*100}%"></i><b>8.06</b></div>
+                <div class="cmp-track"><i class="b" style="width:${2.33/9.5*100}%"></i><b>2.33</b></div></div>
+            </div>
+            ${fig(JHBME + "cryoextract-samples.jpg", "Samples collected with the notched fork (~2 mm wide, left) vs. ICOR (~4 mm wide, right)")}` },
+          { h: "What pulmonologists said", html: `
+            <p>Expert pulmonologists Dr. Ardian Latifi, Dr. Lonny Yarmus and Dr. Gaurav Raman tested ICOR and described it as:</p>
+            <div class="quotes"><span>"easy and intuitive"</span><span>"can one-hand the procedure"</span><span>"quality of samples is significantly better"</span><span>"far faster"</span><span>"a lot more convenient"</span><span>"miles ahead of the fork"</span></div>` },
+          { h: "Sharing the results", html: `
+            <ul>
+              <li>Oral presentation at the 2025 Interventional Pulmonology Outcomes Group (IPOG) conference</li>
+              <li>Poster at the 2025 Johns Hopkins Design Day</li>
+              <li>Spring Nutshell presentation (below)</li>
+            </ul>
+            <figure class="media" data-file="${JHBME}cryoextract-nutshell.mp4"><video src="${JHBME}cryoextract-nutshell.mp4" controls playsinline preload="metadata" class="has-controls" poster="${JHBME}cryoextract-nutshell-poster.jpg"></video><figcaption>Our Spring Nutshell presentation (2.5 min)</figcaption></figure>
+            <p>Team: Taliyah Huang (team leader), Clara Cho, Daphne Garcia-Lopez, Frances Cockburn, Hubert Huho, Michael Yang, Sareena Naganand, and Viet Ngomai.</p>` },
+        ],
+        links: [],
+      },
+    },
+    {
+      slug: "stemables",
+      title: "STEMables", size: "narrow", category: "Personal", tag: "Accessible Education",
+      img: "assets/thumbnails/stemables.jpg",
+      desc: "Tactile, magnetic 3D-printed blocks that let visually impaired kids and kids with limited dexterity code electronics without wires.",
+      tools: ["CAD", "3D Printing", "Arduino"],
+      detail: {
+        subtitle: "Magnetic, tactile blocks that let you physically code electronics, designed so every kid can learn.",
+        org: "Personal project", role: "Inventor, designer & builder", when: "Jun 2021 — Jan 2022 · 8 mos",
+        cover: wx("b94fdb09ee894f3a8b577637111eedc3~mv2.png"),
+        video: "0xLckbni-EI",
+        sections: [
+          { h: "Why it matters to me", html: `
+            <p>I've been passionate about mechatronics since I was 13, and STEMables is still the project I'm most proud of. I invented and produced it before college, and before AI.</p>
+            <p>My mission is to make learning electronics and programming modular, tactile, and accessible, so kids no longer have to worry about tiny wires and writing code.</p>` },
+          { h: "How it works", html: `
+            <p>STEMables are magnetic blocks that you connect to physically "write" a program. You start with a power block and add a sensor, like the distance (proximity) sensor. Then a comparison block and a number block set to a value turn the reading into a true-or-false signal, which can light up an LED block.</p>
+            <p>With Boolean operators, connectors, splitters, and other sensor types, even complex systems can be built block by block.</p>` },
+          { h: "Meet the blocks", html: `
+            <p>12 blocks across five categories: <b>inputs</b> (distance, color, number), <b>outputs</b> (speaker, LED, RGB), <b>connectors</b> (extender, split), <b>power</b> (USB, AC plug), and <b>logic</b> (operator, if).</p>
+            ${gal(fig(wxp("a5694627333141a6b84dc45bf9d1bebe~mv2.png"), "Distance"), fig(wxp("118e1f47d77348729b9c97f709a32abf~mv2.png"), "Color"), fig(wxp("27513d9a90744b3482684b7dba6f6ceb~mv2.png"), "Number"))}
+            ${gal(fig(wxp("7076640284da466cbc5d37f7cd5a37de~mv2.png"), "Speaker"), fig(wxp("6bd0e2b6b13b4824811cb9038da2f75b~mv2.png"), "LED"), fig(wxp("76a9a09f0b104218b674d21f6817ae7e~mv2.png"), "RGB"))}
+            ${gal(fig(wxp("1fe5c6f2348a43049a6005afa65b55ee~mv2.png"), "Operator"), fig(wxp("9e9c2cba19d94b81925d9a0e02ca08ea~mv2.png"), "If"), fig(wxp("5a056718f2494c2e88fd3825294edc41~mv2.png"), "Split"))}
+            ${gal(fig(wxp("a98731052a114989b330620d33b51661~mv2.png"), "Extender"), fig(wxp("1034d70b7c044769b013ad39da1d2a13~mv2.png"), "USB"), fig(wxp("33ed941239234b3287df07706339fe4e~mv2.png"), "AC plug"))}` },
+          { h: "Designed for touch", html: `
+            <p>I designed the unique shape of each 3D-printed block with visually impaired and dexterously challenged kids in mind, so blocks can be told apart by touch. Pairing sensors with the speaker block opens up new possibilities, like letting blind kids hear colors.</p>` },
+        ],
+        links: [["Project website", "https://taliyahengineering.wixsite.com/stemables"]],
+      },
+    },
+    {
+      slug: "constellation-destroyer",
+      title: "Constellation Destroyer", size: "", category: "Startups", tag: "Surgical Robotics",
+      img: MOON + "display.jpg",
+      desc: "A reusable, space-themed training game that walks surgeons through Maestro's key features in a 5–8 minute demo, replacing a $400 single-use dissection model.",
+      tools: ["CAD", "3D Printing"],
+      detail: {
+        subtitle: "Designing a reusable demo and training kit for Moon Surgical's Maestro surgical robotic assistant.",
+        org: "Moon Surgical", role: "Clinical Development Engineering Intern (independent project)", when: "Jun 2024 — Aug 2024 · 3 mos",
+        video: "8-r4F3nH55E", coverVideo: true,
+        sections: [
+          { h: "Project background", html: `
+            <p>Moon Surgical is a French-American startup building Maestro, a surgical robotic assistant. As they expanded marketing across the U.S., surgeons could try the system at conferences, but without performing an actual procedure it was hard to feel how helpful Maestro really is.</p>
+            <p>The existing option, a single-use dissectable model, cost $400 each and was tedious to set up. At the same time, Maestro was being onboarded at new hospitals quickly, so a realistic training kit that could be reset and repeated for every surgeon and nurse was in high demand.</p>` },
+          { h: "Needs definition", html: `
+            <p>I started by defining the needs and the reasoning behind each one:</p>
+            <ul>
+              <li><b>Simulative</b>: trainees gain experience that carries over to a real procedure</li>
+              <li><b>Affordable</b>: the company can run more demos and trainings</li>
+              <li><b>Reusable</b>: saves cost and storage space and reduces environmental impact</li>
+              <li><b>Quick set-up</b>: demos and trainings aren't limited by time</li>
+              <li><b>Robust</b>: looks professional and is easy to identify with the brand</li>
+            </ul>
+            <p>These became design requirements. The user should be prompted to:</p>
+            <ul>
+              <li>Let go of the laparoscope and use both hands on active instruments while Maestro holds the scope</li>
+              <li>Enable High-Force mode to hold up a heavy object</li>
+              <li>Toggle ScoPilot at least twice to track a hook vs. a grasper across the screen</li>
+              <li>Naturally exchange instruments between hook, shears, and grasper</li>
+            </ul>
+            <p>The kit also had to cost no more than $400, take one person under 5 minutes to set up, fit inside the existing abdominal demo model, and include a playful space element to match Moon Surgical's theme.</p>` },
+          { h: "Ideation & prototyping", html: `
+            <p>I began with the gold standard: how Intuitive Surgical trains surgeons on da Vinci with SimNow, a set of virtual-reality games ranging from apple picking (grasper and shears practice) to full procedural simulations. I also pulled ideas from Montessori toys that encourage two-handed manipulation, and from parrot trick accessories, which pack intuitive tasks into a tiny form.</p>
+            ${fig(MOON + "inspo.jpg", "My Notion board of existing products that inspired me")}
+            <p>Early concepts included boxes that had to be held open for a two-handed task inside, and having Maestro keep a rubber band stretched while toothpicks were pushed through it.</p>
+            ${fig(MOON + "sketches.jpg", "Early concept sketches")}
+            <p>Animations and printed prototypes showed me I needed to go back to the drawing board: the kit needed several mini-games combined to drive instrument exchange and the other prompted tasks.</p>
+            ${fig(MOON + "0001-0820.mp4", "Rough Blender animation; the teal grasper attaches to Maestro's arm")}
+            <p>I iterated again and again, testing ease of use with Maestro and real instruments myself. Along the way I learned that kinetic sand was too messy for a hook-dissection task, and that port placement had a big effect on how hard the game was.</p>
+            ${fig(MOON + "prototypes.jpg", "Prototype iterations")}` },
+          { h: "Final product", html: `
+            ${fig(MOON + "IMG_8947.mp4")}
+            <p>The finished Constellation Destroyer is lightweight, one piece, and slides into the abdominal case in seconds. The only disposable parts are rubber bands, and resetting it just means reinserting the spiral bands.</p>
+            ${fig(MOON + "final.jpg")}
+            <p>I also designed a quick reference guide for the four steps of the game:</p>
+            <ol>
+              <li>Lift the silicone "night sky" with a grasper and have Maestro hold it in High-Force mode</li>
+              <li>Use hook and shears to remove the rubber bands linking the constellation</li>
+              <li>Use graspers to pull out each constellation band from different angles</li>
+              <li>Enable ScoPilot to follow a grasper across the map, where a second grasper opens the "black hole" lid so the bands can be dropped in one by one</li>
+            </ol>
+            ${fig(MOON + "qrg.png", "Quick reference guide")}
+            <p>Coworkers trying it for the first time took 5–8 minutes on average, which is right for a conference demo: welcoming, and not frustrating.</p>
+            ${fig(MOON + "testing.jpg", "Helin (fellow intern) and Victoria (my manager) testing the game")}` },
+          { h: "Lessons learned", html: `
+            <p>I struggled early on to fit every element in without overcomplicating something that should feel fun and intuitive. I was stuck on the box idea for a long time, printing prototype after prototype of sliding lids, when I really needed to think <i>outside</i> the box. Talking with coworkers unlocked fresh ideas like the multidimensional rubber-band activity and an elevated platform for instrument reach.</p>
+            <p>Next steps would be more testing with surgeons and non-surgeons, then iterating on their feedback.</p>
+            ${fig(MOON + "0816.mp4", "Playing the game start to finish")}` },
+        ],
+        links: [],
+      },
+    },
+    {
+      slug: "uterine-manipulation-model",
+      title: "Uterine Manipulation Model", size: "", category: "Startups", tag: "Surgical Robotics",
+      img: UT + "thumbnail.jpg",
+      desc: "A demo model that lets Maestro hold a uterine manipulator. Compatible with 8 commercial manipulators.",
+      tools: ["CAD", "3D Printing"],
+      detail: {
+        subtitle: "A benchtop model showing how Maestro could take over the tiring job of holding a uterine manipulator during gynecologic surgery.",
+        org: "Moon Surgical", role: "Clinical Development Engineering Intern (independent project)", when: "Jun 2024 — Aug 2024 · 3 mos",
+        cover: UT + "final.mp4",
+        
+        sections: [
+          { h: "Project background", html: `
+            <p>Moon Surgical had announced plans to expand Maestro into gynecologic surgery, where the robot would hold the uterine manipulator. I was asked to design a model to demo this.</p>
+            <p>In a typical procedure an assistant, usually a medical student, crouches at the patient's legs and holds the manipulator to lift the uterus, so the surgeon can see the surrounding tissue. This can go on for minutes to hours. Fatigue causes delays and ergonomic strain, and it uses a highly trained person for a tedious task.</p>` },
+          { h: "Needs definition", html: `
+            <p>The users were Moon's clinical development engineers running demos and the surgeons trying it themselves. The needs were:</p>
+            <ul>
+              <li><b>Representation</b>: observers connect the model to a real procedure</li>
+              <li><b>Affordability</b>: cheap and easy to mass-produce within a strict demo budget</li>
+              <li><b>Ease of use</b>: observers can confidently use it after watching once or twice</li>
+            </ul>
+            <p>Because this was a new application, I studied everything from the conditions and procedural steps to OR set-up. We also interviewed several surgeons about their manipulator preferences for hysterectomies, myomectomies, and more. Retracting the uterus upward came out as the most important motion.</p>
+            ${fig("https://www.mdpi.com/applsci/applsci-14-03851/article_deploy/html/images/applsci-14-03851-g002.png", "Upward retraction was the key manipulator action (image: MDPI Applied Sciences)")}
+            <p>Requirements:</p>
+            <ul>
+              <li>Simulate pitch rotation, and ideally roll and yaw</li>
+              <li>Work with the existing benchtop abdominal model used for Maestro demos</li>
+              <li>Represent the typical shape and size of the anatomy with a manipulator inside</li>
+              <li>Fit the 8 most common manipulators: RUMI II, Advincula Delineator, HOHL, MAUT 60, ElevatOR, VCare, ClearView, Cohen Acorn</li>
+              <li>Let the tip reach the uterus while the occluder cup is secured</li>
+            </ul>
+            ${fig(UT + "manipulators.png", "VCare, Advincula Delineator, MAUT 60, RUMI II")}` },
+          { h: "Ideation & prototyping", html: `
+            <p>The silicone anatomy models on the market were accurate in size and texture but didn't show where the uterus sits inside the abdomen, and they were expensive.</p>
+            ${fig(UT + "models.jpg", "Existing commercial models")}
+            <p>A DIY trainer made from a water bottle and fabric inside a storage bin inspired me to build a more professional version. All I needed was a realistic uterus that attached inside the existing abdomen model.</p>
+            ${fig(UT + "manipulate.mp4", "Uterine manipulator simulation by Allen Huy Doan, University of Arizona College of Medicine")}
+            <p>My first attempt was a silicone casting from a 3-piece printed mold designed in Blender. Because the inner cavity was wider than the opening, the mold couldn't be removed, the thin fallopian tubes broke off, and the silicone wasn't stretchy enough to hold the occluder cup.</p>
+            ${fig(UT + "casting.jpg", "The Blender-designed mold for the silicone version")}
+            <p>So I switched to printing the uterus in flexible resin. It was stiffer than silicone, but it was transparent, so you could see the probe and how far it reached, which was an unplanned bonus. I modeled the supporting anatomy in its most opened position and fixed it to the outside of the abdomen, refining the pipe-flange connector with every iteration.</p>
+            ${fig(UT + "printing.jpg", "Iterating on the flange connector and form")}` },
+          { h: "Final product", html: `
+            <p>The final model works with all 8 manipulators. The user secures the occluder cup, controls pitch and yaw, and sees the result through a laparoscope from the other side. The surgeon can position the uterus exactly as they want and hand it off to Maestro, which doesn't get tired. That removes the need for a bedside assistant and keeps the procedure flowing.</p>
+            ${fig(UT + "final.mp4", "The flexible abdominal wall made manipulation easy")}
+            <p>Roll control was the one milestone I didn't reach. I'd also move the whole complex to a more anatomically correct position, which the existing abdomen model limited. I left the CAD behind so the team could keep improving it.</p>
+            ${fig(UT + "demos.jpg", "Fit-testing each manipulator")}` },
+          { h: "Lessons learned", html: `
+            <p>Missing a design goal can open up possibilities you hadn't considered. Silicone couldn't give me the color and flexibility of real tissue, but transparent rigid resin made a durable model that locked onto the abdomen and showed the manipulator moving inside.</p>` },
+        ],
+        links: [],
+      },
+    },
+    {
+      slug: "cpace",
+      title: "CPACE", size: "narrow", category: "Personal", tag: "Assistive Tech",
+      img: "assets/thumbnails/cpace.png",
+      desc: "An open-source head-tracking headband and bite-sensor mouthpiece so people with quadriplegia can use any phone or computer.",
+      tools: ["CAD", "3D Printing", "Arduino"],
+      detail: {
+        subtitle: "A simple, affordable, open-source way for people with quadriplegia to use a typical smartphone or computer.",
+        org: "Personal project", role: "Designer & builder", when: "Nov 2020 — May 2021 · 7 mos",
+        cover: wx("2fed066011714dda94996f413db0d06d~mv2.png"),
+        video: "0uANgR1oOII", videoStart: 25, coverVideo: true,
+        sections: [
+          { h: "The story", html: `
+            <p>CPACE started with a friend I met through a school buddy program, who has cerebral palsy. Existing assistive options either covered only a few apps or cost as much as $17,500, so my first goal was an affordable device that could tap a smartphone screen for her: a motorized stylus she could control.</p>
+            ${fig(wxp("f2c36d0cf35c484c9a1c18e63ae497b2~mv2.png"), "Existing eye-tracking solutions can cost $17,500")}
+            <p>She couldn't use that first version. It was too hard to control, which taught me to design around what the user can actually do, not what the device can do.</p>
+            ${gal(fig(W + "909011bc27e54b14b30ba0f649bfef92~mv2.gif", "Version 1: a motorized stylus, calibrated with a button"),
+                  fig(wx("b176552ce64944a998b1a29fd28fcdf5~mv2.jpg"), "The first prototype"),
+                  fig(wxp("1881c12e84b54707866c90ee9e9eab4c~mv2.png"), "Version 1 wiring"))}` },
+          { h: "Exploring alternatives", html: `
+            <p>Next I tried glasses with sensors for eye tracking. I dropped the idea because the tracking wasn't reliable enough to trust.</p>
+            ${gal(fig(wx("c7b522cdb25f4231be62fb4664d1e620~mv2.jpg"), "Sensors on the eye-tracking glasses"),
+                  fig(wxp("ed0d4cead9cd45d1a789583dce05c0ad~mv2.png"), "Eye-tracking glasses schematic"))}` },
+          { h: "The final design", html: `
+            <ul>
+              <li><b>Headband:</b> a comfy bunny headband tracks head movement to move the on-screen cursor</li>
+              <li><b>Mouthpiece:</b> a bite sensor handles clicks and drags; it's adjustable and washable</li>
+              <li><b>Smartphone:</b> plugs straight in and uses the iPhone's built-in AssistiveTouch, with no extra software</li>
+              <li><b>Computer:</b> plugs into a USB port with no extra setup</li>
+            </ul>
+            ${gal(fig(wxp("2fed066011714dda94996f413db0d06d~mv2.png"), "CPACE's headband, mouthpiece, and smartphone stand"),
+                  fig(wx("351be2d4b4a64d0abe6c218bed484bae~mv2.jpg"), "On iPhone, CPACE works through the built-in AssistiveTouch"))}` },
+          { h: "Build", html: `
+            <p>CPACE runs on an Arduino Leonardo with a BNO055 orientation sensor for head tracking and a pressure sensor inside the mouthpiece. I designed the smartphone stand, headband box, mouthpiece, and computer box in CAD and 3D printed them, and drew wiring schematics for both versions. Everything is open source, with CAD files on Thingiverse.</p>
+            ${gal(fig(wxp("ab85da2e06114300868863aead1edd0b~mv2.png"), "Smartphone version schematic"),
+                  fig(wxp("ec5ac42aa493410eab0743a7c1b21487~mv2.png"), "Computer version schematic"))}
+            ${gal(fig(wxp("18932f0bc35d42bfaf7ba10ed4eb8e8f~mv2.png"), "Smartphone stand"),
+                  fig(wxp("4b7c9758a6bf456aa1f7cfc5519952cf~mv2.png"), "Headband box"),
+                  fig(wxp("4901a4b8e34945afb5ac9fbc50b6989e~mv2.png"), "Mouthpiece"))}
+            ${gal(fig(wxp("a57dee73c9914b2bae6e29f1d31c3a18~mv2.png"), "Smartphone stand render"),
+                  fig(wxp("27b30ea0f2074b4790234a671c0405b0~mv2.png"), "Stand drawing"),
+                  fig(wxp("ad935682995b4153838012518d6cb5b0~mv2.png"), "Computer box"))}` },
+          { h: "Known limitations", html: `
+            <ul>
+              <li>Smartphone support is limited to iPhones; iPads need code changes</li>
+              <li>The mouthpiece causes drooling during long sessions</li>
+              <li>The cursor sometimes drifts off-center</li>
+            </ul>` },
+        ],
+        links: [["Project website", "https://taliyahengineering.wixsite.com/cpace"], ["How it works (YouTube)", "https://www.youtube.com/watch?v=hZ5zckIzZoA"]],
+      },
+    },
+    {
+      slug: "auto-mask",
+      title: "Auto Mask", size: "narrow", category: "Personal", tag: "Assistive Tech",
+      img: "assets/thumbnails/automask.png",
+      desc: "A touchless robotic mask with an eye shield and air-quality and muscle sensors, built for COVID-19 and wildfire smoke. Won Best Hardware Hack at TeenHacksHTX.",
+      tools: ["CAD", "3D Printing", "Arduino"],
+      detail: {
+        subtitle: "Comfortable. Safe. Efficient. A wearable mask that moves on and off automatically, built for the COVID-19 pandemic and California wildfire smoke.",
+        org: "Personal project", role: "Designer & builder", when: "Apr — Sep 2020 · 6 mos",
+        cover: W + "8b24daf872c14081afb3a6a64abf2b0e~mv2.gif",
+        video: "mftXIeZvh94", videoStart: 9,
+        sections: [
+          { h: "The problem", html: `
+            <p>In 2020, Californians were wearing masks for two reasons at once: COVID-19 and wildfire smoke. But masks come with problems: they can make breathing harder, get worn incorrectly or unhygienically, cause skin injuries, get pulled off at critical moments, or just not get worn at all.</p>` },
+          { h: "Features", html: `
+            <p class="hover-hint">Hover over (or tap) each feature to see it in action.</p>
+            <div class="feat-grid">
+              ${[
+                ["Eye shield", "Blocks infected saliva from reaching your eyes", "defe6c50830a4a199fc06a4792784da2~mv2.jpg", "627cd0a7cfee44ceac1e2bbc08cc2efc~mv2.jpg"],
+                ["Touchless control", "A wave of the hand moves the mask, so germs don't transfer from your fingers", "f74323688083415f972c511ec67af1f2~mv2.jpg", "9efc3111bfb04a389a15b1b77376df1a~mv2.jpg"],
+                ["Muscle sensor", "Moves the mask in time for a cough or sneeze", "661c6d0689924b67a377ebdfd1552537~mv2.jpg", "629cb89e565f44bca72b0887ded44df1~mv2.jpg"],
+                ["Comfort to wear", "Glasses-style fit that keeps the mask off your face until you need it", "3e62bf9fff5b420dba451a716a8676f2~mv2.jpg", "9a5aecb4fb5b46b4ab1ebfc5d859ffb7~mv2.jpg"],
+                ["Air sensor", "Detects poor air, like wildfire smoke, and lowers the mask", "3bde45ef9bce4f37bbecdcf137c9b274~mv2.jpg", "b4b48c846d514beda6b303a70a50b77f~mv2.jpg"],
+                ["Compact portability", "Folds up to fit in a bag", "ab1b04c29fb2496b8380633d172a7e06~mv2.png", "78900246c2ab43ecb5d7996f56a9ae40~mv2.png"],
+              ].map(([t, d, a, b]) => `<div class="feat" tabindex="0"><div class="feat-media"><img src="${wx(a, 700)}" alt="${t}" loading="lazy"><img class="on" src="${wx(b, 700)}" alt="${t} in action" loading="lazy"></div><h4>${t}</h4><p>${d}</p></div>`).join("")}
+            </div>` },
+          { h: "Version 1.0 & CAD iteration", html: `
+            <p>I built the first prototype in May 2020, about a month after the idea. Version 1.0 had an eye shield, touchless control, an on/off switch, and a muscle sensor, all mounted on a glasses-style frame. It won Best Hardware Hack at TeenHacksHTX on May 30, and I tested it in public that June.</p>
+            <p>Turning it into Version 2.0 took months of CAD iteration in Onshape. Each round meant adjusting the servo housings and mask arms, printing them, and test-fitting them on the frame, until the parts were compact enough to fold and comfortable enough to wear.</p>
+            ${galCols("1.333fr 1.204fr .344fr", fig(wx("a1276bfae00a47fb8b6b0f2dd184e863~mv2.jpg"), "", { ratio: "4/3" }), fig(wx("74a70e1201f5453bb8c7ab5f8b24bb60~mv2.jpg"), "", { ratio: "1200/997", rot: -90 }), fig(wx("88a7362e3544495ca9b0efddae654ccf~mv2.jpg"), "", { ratio: "413/1200" }))}` },
+          { h: "Version 2.0", html: `
+            <p>After the hackathon win I redesigned it to be sleeker, with a detachable muscle sensor, more comfort, an air-quality sensor, a foldable design, and snap-on masks.</p>
+            ${fig(wx("0500517f206e41c5867ee92b015e2e79~mv2.jpg"), "The finished Version 2.0", { w: "640px" })}` },
+          { h: "CAD", html: `
+            <p>I designed all the parts in Onshape and 3D printed them. Each side has a servo housing that clips onto the glasses frame, and a bent arm that swings the mask up and down. CAD files for both versions are on Thingiverse.</p>
+            ${fig("assets/auto-mask/automask-cad.webp", "Rendered from my Version 2.0 CAD files: the left and right servo housings, and the right mask arm", { fit: "contain" })}` },
+          { h: "Electronics", html: `
+            <p>An Arduino Nano reads a MyoWare muscle sensor, an SGP30 gas sensor, and a proximity sensor, and drives two micro servos. It runs on two CR2 batteries.</p>
+            ${fig(wx("9f6df39d98084984af79c10e42e470d0~mv2.png"), "Circuit diagram")}` },
+        ],
+        links: [["Project website", "https://taliyahengineering.wixsite.com/automask"], ["How it works (YouTube)", "https://www.youtube.com/watch?v=zQ0LPL9Lbbc"], ["V1 files", "https://www.thingiverse.com/thing:4401765/files"], ["V2 files", "https://www.thingiverse.com/thing:4596393"]],
+      },
+    },
+    {
+      slug: "mouseky",
+      title: "Mouseky", size: "narrow", category: "Personal", tag: "Product Design",
+      img: "assets/thumbnails/mouseky.png",
+      desc: "A split, wireless, 64-key keyboard with an integrated mouse. Featured by Arduino, Gizmodo, Hackster.io, and Hackaday.",
+      tools: ["CAD", "3D Printing", "Arduino"],
+      detail: {
+        subtitle: "A split, wireless, 64-key keyboard with an integrated mouse, designed from scratch.",
+        org: "Personal project", role: "Designer & builder", when: "Jun 2022 — Jul 2022 · 2 mos",
+        video: "6V3gyArkQ38", videoStart: 5,
+        sections: [
+          { h: "The idea", html: `
+            <p>Mouseky is a split, wireless, 64-key keyboard with an integrated mouse that packs in touchpad-equivalent features, so you can scroll, click, and move the cursor without ever taking your hands off the keyboard to reach for a mouse.</p>` },
+          { h: "Design & build", html: `
+            <ul>
+              <li>Housing modeled in CAD and 3D printed to cleanly package the electronics</li>
+              <li>Hand-soldered all 64 keyswitches and their wiring to the Arduino boards in each half, which took 24 hours</li>
+              <li>Wrote custom Arduino firmware that reads every key, handles the built-in mouse controls, and sends it all to the computer wirelessly</li>
+            </ul>
+            ${fig("assets/mouseky/mouseky-cad.webp", "Exploded view of the right half from my CAD files: the keyswitch plate above the housing that holds the electronics", { fit: "contain", w: "620px" })}` },
+          { h: "In action", html: `
+            ${gal(fig("assets/mouseky/mouseky-1.mp4", "Soldering Mouseky took 24 hours", { ratio: "9/16" }),
+                  fig("assets/mouseky/mouseky-2.mp4", "From CAD to keyboard", { ratio: "9/16" }),
+                  fig("assets/mouseky/mouseky-3.mp4", "Split, wireless, and a mouse built in", { ratio: "9/16" }))}` },
+          { h: "Reception", html: `
+            <p>Mouseky was spotlighted by the official Arduino account and featured on Gizmodo, Hackster.io, and Hackaday. I published DIY build instructions on Printables so others can make their own.</p>
+            ${fig("assets/mouseky/arduino-spotlight.jpg", "Mouseky spotlighted by the official Arduino account")}` },
+        ],
+        links: [
+          ["DIY on Printables", "https://www.printables.com/model/356141-mouseky"],
+          ["Onshape CAD", "https://cad.onshape.com/documents/daeff293f435e04e10f71e4f/w/c092231cd4a00ebba90fb4d6/e/fa73797f2dd503dabaa65d9a"],
+          ["Arduino spotlight", "https://x.com/arduino/status/1624162373991911424"],
+        ],
+      },
+    },
+  ],
+
+  /* ---------- LEARNING IN PUBLIC ---------- */
+  learning: {
+    intro: "I learn fastest by building, and I share what I learn so the next person can start faster. Whatever a team needs, I pick it up, figure it out, and teach it back.",
+    principles: [
+      { title: "Learn the domain fast", text: "At Moon Surgical I dove into gynecologic surgery research, interviewed surgeons, and delivered a working demo model in one summer." },
+      { title: "Fill whatever role the team needs", text: "Clinical studies, CAD, test fixtures, documentation, social media. I've done all of them because the team needed it." },
+      { title: "Teach it back", text: "An 80+ page assembly manual, training a manufacturer's team, youth STEM outreach, and now online tutorials." },
+    ],
+    items: [
+      { kind: "Teaching", title: "MuJoCo for Beginners", when: "Sep — Oct 2026",
+        img: "assets/learning/mujoco-collage.jpg", imgLink: "https://www.instagram.com/taliyahengineering/p/DeDZjMCmvAk/",
+        stats: [["49K+", "views"], ["2,000+", "likes"]],
+        text: "A 4-part tutorial series for getting started with the MuJoCo physics engine on macOS. I'm learning robot simulation myself and sharing each step as I go, from installing MuJoCo to PID control and reinforcement learning on a humanoid.",
+        parts: [
+          ["Pt. 1", "How do you actually get started with a physics engine?", "https://www.instagram.com/taliyahengineering/p/DdkCbw6khUg/"],
+          ["Pt. 2", "How do engineers actually simulate a robot's movement?", "https://www.instagram.com/taliyahengineering/p/DdzZ3jXkuba/"],
+          ["Pt. 3", "How do you prevent a robot from falling over? (PID control)", "https://www.instagram.com/taliyahengineering/p/DeDZjMCmvAk/"],
+        ],
+        link: ["Watch the full series", "https://www.instagram.com/taliyahengineering/"] },
+      { kind: "Building", title: "ROS Simulator in Roblox", when: "Aug 2026 — present",
+        img: "assets/learning/ros-collage.jpg", imgLink: "https://www.instagram.com/taliyahengineering/reel/DcEPYrmhZkJ/",
+        stats: [["175K+", "views"], ["6,400+", "likes"]],
+        text: "While learning ROS (Robot Operating System), I started recreating it as a playable Roblox game. Players work through robotics challenge levels, from naming joints and links to rotation matrices and gripper positioning.",
+        parts: [
+          ["Aug 2", "I tried to recreate ROS on Roblox!", "https://www.instagram.com/taliyahengineering/reel/DbiwNWShUxW/"],
+          ["Aug 15", "Would you try this game?", "https://www.instagram.com/taliyahengineering/reel/DcEPYrmhZkJ/"],
+          ["Aug 19", "Added challenges", "https://www.instagram.com/taliyahengineering/reel/DcOk3t7hjbr/"],
+          ["Oct 7", "MATLAB in Roblox", "https://www.instagram.com/taliyahengineering/reel/DeNBerKvzW5/"],
+        ],
+        link: ["Follow along", "https://www.instagram.com/taliyahengineering/"] },
+      { kind: "Presenting", title: "Cyborg and Bionic Systems Conference", when: "Sep 2026 · Germany",
+        img: "assets/learning/cbs-collage.jpg", imgLink: "https://www.instagram.com/taliyahengineering/reel/DdHdwOVvj-2/",
+        stats: null,
+        text: "I traveled to Germany to present my ball-jointed prosthetic hand research and to learn from the latest bionics work. In a 3-part series, I documented what surprised me and what I learned along the way. One presentation there directly inspired the TPU finger design in my climbing glove.",
+        parts: [["Pt. 1", "Getting to Germany (train delays and all)", "https://www.instagram.com/taliyahengineering/reel/DdHdwOVvj-2/"], ["Pt. 2", "My poster and talks on human augmentation", "https://www.instagram.com/taliyahengineering/reel/DdMkxZrhO3_/"], ["Pt. 3", "How injury affects proprioception", "https://www.instagram.com/taliyahengineering/reel/DdSFv2mSkCP/"]],
+        link: null },
+    ],
+  },
+
+  /* Skills — [name, years of experience]. Use decimals for months (4 months = 4/12).
+     Bars are scaled against the longest skill (8 yrs). */
+  capabilities: [
+    { name: "CAD / 3D Design", icon: "cube",
+      skills: [["Onshape", 8], ["Blender", 5], ["SolidWorks", 2]] },
+    { name: "Programming", icon: "code",
+      skills: [["Python", 6], ["C++", 4], ["MATLAB", 3], ["Java", 1]] },
+    { name: "Electronics / Robotics", icon: "chip",
+      skills: [["Arduino", 6], ["ROS", 4 / 12], ["Simulink", 2 / 12]] },
+    { name: "Graphic Design", icon: "pen",
+      skills: [["Photoshop", 7], ["Canva", 5], ["Figma", 2]] },
+    { name: "Video Editing", icon: "film",
+      skills: [["CapCut", 4], ["DaVinci Resolve", 3], ["HitFilm Express", 2]] },
+  ],
+
+  /* Experience — start/end as "YYYY-MM" (end: null = Present). Duration is calculated. */
+  experience: [
+    { start: "2025-01", end: "2026-09", role: "Undergraduate Researcher", org: "Haptics and Medical Robotics Lab · Johns Hopkins",
+      note: "Ball-jointed prosthetic hand; first-author manuscript on visual perception of damping. Presented at the 2025 Malone Healthcare Symposium, the 2026 Neural Control of Movement Conference in Kobe, Japan, and the 2026 Cyborg and Bionic Systems conference in Germany.", badge: "Research" },
+    { start: "2025-06", end: "2026-01", role: "Testing & Production Intern", org: "Kubanda Cryotherapy · cryogenic tumor treatment for pets",
+      note: "SolidWorks welding drawings, 3D-printed QC fixtures, an 80+ page assembly manual, and training the third-party manufacturer", badge: "Internship" },
+    { start: "2024-06", end: "2024-08", role: "Clinical Development Engineering Intern", org: "Moon Surgical · surgical robotics",
+      note: "Usability studies with 15 surgeons (4 cadaver labs). Independently designed a reusable training game for Maestro's commercial launch and a custom gynecologic model for uterine manipulation demos.", badge: "Internship" },
+    { start: "2024-01", end: null, role: "Design Team Leader & Project Manager", org: "Johns Hopkins Biomedical Engineering",
+      note: "Led 8 students on a lung cryobiopsy device with promising results in live-animal testing", badge: "Leadership" },
+    { start: "2023-12", end: "2026-05", role: "President & Lead Designer", org: "JHU Engineering Design Center Student Advisory Board",
+      note: "Designed the Design Day keynote awards for Dean Kamen, Rich Mahoney, and Carol Reiley", badge: "Leadership" },
+    { start: "2023-01", end: "2023-12", role: "Undergraduate Research Assistant", org: "Li Terradynamics Lab · Johns Hopkins",
+      note: "Analyzed goat and human climbing mechanics in Python and MATLAB for robot development", badge: "Research" },
+    { start: "2022-06", end: "2022-08", role: "Bioengineering Team Intern", org: "Stanford Center for Biodesign (SIMR)",
+      note: "CAD, 3D printing, and animation for an emergency allergy medication device", badge: "Internship" },
+  ],
+
+  contact: [
+    { label: "Email", value: "taliyahengineering@gmail.com", href: "mailto:taliyahengineering@gmail.com" },
+    { label: "LinkedIn", value: "/in/taliyah-huang", href: "https://www.linkedin.com/in/taliyah-huang/" },
+    { label: "YouTube", value: "@taliyahengineering", href: "https://youtube.com/@taliyahengineering" },
+    { label: "Instagram", value: "@taliyahengineering", href: "https://www.instagram.com/taliyahengineering/" },
+    { label: "Résumé", value: "PDF ↗", href: "assets/Taliyah_Huang_CV.pdf" },
+  ],
+};
+</script>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#top" class="brand"><span class="brand-mark">TH</span><span id="brand-name"></span></a>
+    <div class="nav-links">
+      <a href="#work">Projects</a>
+      <a href="#learning">Learning</a>
+      <a href="#capabilities">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+      <button class="toggle" id="themeToggle" aria-label="Toggle light and dark mode">
+        <span class="knob">
+          <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap" id="top">
+
+ <div id="home">
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-grid">
+      <div class="reveal">
+        <div class="label"><span id="hero-title"></span></div>
+        <h1><span id="hero-tagline"></span><br><span class="accent" id="hero-accent" style="font-size: clamp(33px, 5.25vw, 63px)"></span></h1>
+        <p class="lede" id="hero-lede"></p>
+        <div class="hero-ctas">
+          <a href="#work" class="btn btn-primary">View case studies
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#" class="btn btn-ghost" id="resume-btn">Download résumé</a>
+        </div>
+      </div>
+
+      <aside class="id-card reveal">
+        <div class="id-top">
+          <span class="label">Versatile Engineer</span>
+          <span class="status"><i></i><span id="status"></span></span>
+        </div>
+        <div class="avatar" id="avatar"></div>
+        <svg class="ecg" viewBox="0 0 300 46" preserveAspectRatio="none">
+          <path d="M0 23 H80 L90 23 L96 10 L104 38 L112 4 L120 42 L126 23 H190 L198 23 L204 14 L210 30 L216 23 H300"/>
+        </svg>
+        <div class="id-rows">
+          <div class="id-row"><span>Location</span><span id="loc"></span></div>
+          <div class="id-row"><span>Education</span><span id="edu"></span></div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="vitals" id="vitals"></div>
+  </header>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="section-head reveal">
+      <div>
+        <h2>Featured case studies</h2>
+      </div>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="projects" id="projects"></div>
+  </section>
+
+  <!-- LEARNING IN PUBLIC -->
+  <section id="learning">
+    <div class="section-head reveal">
+      <div>
+        <h2>Always learning</h2>
+        <p class="section-sub" id="learn-intro"></p>
+      </div>
+    </div>
+    <div class="principles" id="principles"></div>
+    <div class="learn" id="learn"></div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section id="capabilities">
+    <div class="section-head reveal">
+      <div>
+        <h2>Skills</h2>
+      </div>
+    </div>
+    <div class="caps" id="caps"></div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-head reveal">
+      <div>
+        <h2>Experience</h2>
+      </div>
+    </div>
+    <div class="exp" id="exp"></div>
+  </section>
+ </div>
+
+  <!-- CASE STUDY DETAIL (filled in when a card is opened) -->
+  <div id="detail" hidden></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact reveal">
+      <div>
+        <div class="label" style="margin-bottom:18px">Get in touch</div>
+        <h2>Let's build something.</h2>
+      </div>
+      <div class="contact-links" id="contact-links"></div>
+    </div>
+  </section>
+
+  <footer>
+    <span id="footer-name"></span>
+    <span class="label"><span id="year"></span></span>
+  </footer>
+</main>
+
+<script>
+  /* ---------- THEME ---------- */
+  const root = document.documentElement;
+  const getSaved = () => { try { return localStorage.getItem("theme"); } catch (e) { return null; } };
+  const save = v => { try { localStorage.setItem("theme", v); } catch (e) {} };
+  root.dataset.theme = getSaved() || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  document.getElementById("themeToggle").addEventListener("click", () => {
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
+    root.dataset.theme = next; save(next);
+  });
+
+  /* ---------- MISSING MEDIA → placeholder ---------- */
+  document.addEventListener("error", e => {
+    const el = e.target;
+    if (!(el instanceof HTMLImageElement || el instanceof HTMLVideoElement)) return;
+    if (el.dataset && el.dataset.fallback) { el.outerHTML = decodeURIComponent(el.dataset.fallback); return; }
+    const box = el.closest(".media, .project-media, .avatar, .d-cover");
+    if (!box) return;
+    const f = (box.dataset.file || "").split("?")[0].split("/").pop();
+    box.dataset.short = f.length > 34 ? f.slice(0, 31) + "…" : f;
+    box.classList.add("missing"); el.remove();
+  }, true);
+
+  /* ---------- RENDER FROM PROFILE ---------- */
+  const P = PROFILE, $ = id => document.getElementById(id);
+  const full = `${P.firstName} ${P.lastName}`;
+  const baseTitle = `${full} — ${P.title || "Engineering Portfolio"}`;
+  document.title = baseTitle;
+  $("brand-name").textContent = full;
+  $("hero-title").textContent = P.title;
+  $("hero-tagline").textContent = P.tagline.charAt(0).toUpperCase() + P.tagline.slice(1);
+  $("hero-accent").textContent = P.taglineAccent;
+  $("hero-lede").textContent = P.lede;
+  $("status").textContent = P.status;
+  $("loc").textContent = P.location;
+  $("edu").textContent = P.education;
+  $("resume-btn").href = P.resumeUrl;
+  $("footer-name").textContent = full;
+  $("year").textContent = new Date().getFullYear();
+  $("avatar").innerHTML = P.photo ? `<img src="${P.photo}" alt="${full}">` : `<span class="initials">${P.initials}</span>`;
+
+  $("vitals").innerHTML = P.vitals.map(v => `
+    <div class="vital reveal">
+      <div class="label">${v.label || "Vital"}</div>
+      <div class="num">${v.num}<sup>${v.suffix}</sup></div>
+      <div class="desc">${v.desc}</div>
+    </div>`).join("");
+
+  const cats = ["All", "Startups", "Research", "Personal"];  /* filter order */
+  $("filters").innerHTML = cats.map((c, i) =>
+    `<button class="${i === 0 ? "active" : ""}" data-cat="${c}">${c}</button>`).join("");
+
+  const ARROW = `<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>`;
+  $("projects").innerHTML = P.projects.map((p, i) => `
+    <a href="#/work/${p.slug}" class="project ${p.size} reveal" data-cat="${p.category}">
+      <div class="project-media">
+        <span class="ph">FIG. ${String(i + 1).padStart(2, "0")} — ADD IMAGE</span>
+        ${!p.img ? "" : /\.(mp4|webm|mov)$/i.test(p.img)
+          ? `<video src="${p.img}" poster="${p.imgPoster || ""}" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:${p.imgPos || "center"}"></video>`
+          : `<img src="${p.img}" alt="${p.title}" loading="lazy" style="object-position:${p.imgPos || "center"}">`}
+        <span class="project-tag">${p.tag}</span>
+      </div>
+      <div class="project-body">
+        <span class="card-date">${(p.detail.when || "").split(" · ")[0]}</span>
+        <h3>${p.title}<span class="arrow">${ARROW}</span></h3>
+        <p>${p.desc}</p>
+        <div class="chips">${p.tools.map(t => `<span class="chip">${t}</span>`).join("")}</div>
+      </div>
+    </a>`).join("");
+
+  $("filters").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    [...$("filters").children].forEach(x => x.classList.toggle("active", x === b));
+    document.querySelectorAll(".project").forEach(card =>
+      card.classList.toggle("hide", b.dataset.cat !== "All" && card.dataset.cat !== b.dataset.cat));
+  });
+
+  const ICONS = {
+    cube: '<path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/>',
+    pulse: '<path d="M3 12h4l3-8 4 16 3-8h4"/>',
+    wrench: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>',
+    code: '<path d="M8 6l-6 6 6 6M16 6l6 6-6 6M14 4l-4 16"/>',
+    chip: '<rect x="6" y="6" width="12" height="12" rx="3"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+    pen: '<path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><circle cx="11" cy="11" r="2"/>',
+    film: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/>',
+  };
+  const MAX_YRS = Math.max(...P.capabilities.flatMap(c => c.skills.map(s => s[1])));
+  const fmtYrs = y => y < 1
+    ? `${Math.round(y * 12)} mo${Math.round(y * 12) > 1 ? "s" : ""}`
+    : `${+y.toFixed(1)} yr${y > 1 ? "s" : ""}`;
+  $("caps").innerHTML = P.capabilities.map(c => `
+    <div class="cap reveal">
+      <div class="cap-icon"><svg viewBox="0 0 24 24">${ICONS[c.icon] || ICONS.cube}</svg></div>
+      <h3>${c.name}</h3>
+      ${c.skills.map(([n, y]) => `
+        <div class="meter">
+          <div class="meter-top"><span>${n}</span><span>${fmtYrs(y)}</span></div>
+          <div class="meter-bar"><div class="meter-fill" data-w="${Math.max(3, y / MAX_YRS * 100)}"></div></div>
+        </div>`).join("")}
+      ${c.tags ? `<div class="chips">${c.tags.map(t => `<span class="chip">${t}</span>`).join("")}</div>` : ""}
+    </div>`).join("");
+
+  const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const fmtMonth = ym => { const [y, m] = ym.split("-").map(Number); return `${MON[m - 1]} ${y}`; };
+  const span = (a, b) => {
+    const [y1, m1] = a.split("-").map(Number);
+    const now = new Date(), [y2, m2] = b ? b.split("-").map(Number) : [now.getFullYear(), now.getMonth() + 1];
+    const n = (y2 - y1) * 12 + (m2 - m1) + 1, y = Math.floor(n / 12), m = n % 12;
+    return [y && `${y} yr${y > 1 ? "s" : ""}`, m && `${m} mo${m > 1 ? "s" : ""}`].filter(Boolean).join(" ");
+  };
+  const L = P.learning;
+  $("learn-intro").textContent = L.intro;
+  $("principles").innerHTML = L.principles.map((x, i) => `
+    <div class="principle reveal"><span class="pnum">${String(i + 1).padStart(2, "0")}</span><h3>${x.title}</h3><p>${x.text}</p></div>`).join("");
+  $("learn").innerHTML = L.items.map(x => `
+    <article class="learn-card reveal">
+      ${x.img ? `<a class="learn-media" href="${x.imgLink || "#"}" target="_blank" rel="noopener"><img src="${x.img}" alt="${x.title}" loading="lazy" style="object-position:${x.imgPos || "center"}"></a>` : ""}
+      <div class="learn-top"><span class="learn-kind">${x.kind}</span><span class="label">${x.when}</span></div>
+      <h3>${x.title}</h3>
+      ${x.stats ? `<div class="learn-stats">${x.stats.map(([n, l]) => `<span><b>${n}</b> ${l}</span>`).join("")}</div>` : ""}
+      <p>${x.text}</p>
+      <div class="learn-parts">${x.parts.map(([n, t, u]) =>
+        `<a href="${u}" target="_blank" rel="noopener"><span>${n}</span><b>${t}</b><i>↗</i></a>`).join("")}</div>
+      ${x.link ? `<a class="learn-link" href="${x.link[1]}" target="_blank" rel="noopener">${x.link[0]} ↗</a>` : ""}
+    </article>`).join("");
+
+  $("exp").innerHTML = P.experience.map(x => `
+    <div class="exp-item reveal">
+      <span class="when">${fmtMonth(x.start)} — ${x.end ? fmtMonth(x.end) : "Present"}<em>${span(x.start, x.end)}</em></span>
+      <div><h4>${x.role}</h4><p>${x.org}</p>${x.note ? `<p class="note">${x.note}</p>` : ""}</div>
+      <span class="badge ${x.now ? "now" : ""}">${x.badge}</span>
+    </div>`).join("");
+
+  $("contact-links").innerHTML = P.contact.map(c =>
+    `<a href="${c.href}" ${c.href.startsWith("http") ? 'target="_blank" rel="noopener"' : ""}><span>${c.label}</span><span>${c.value}</span></a>`).join("");
+
+  /* ---------- CASE STUDY PAGE ---------- */
+  function renderDetail(p) {
+    const d = p.detail, i = P.projects.indexOf(p), next = P.projects[(i + 1) % P.projects.length];
+    const coverSrc = d.cover || p.img;
+    const yt = id => `<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0${d.videoStart ? "&start=" + d.videoStart : ""}" title="${p.title} video" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+    const cover = d.coverVideo && d.video ? yt(d.video) : !coverSrc ? "" : /\.(mp4|mov|webm)$/i.test(coverSrc)
+      ? `<video src="${coverSrc}" autoplay muted loop playsinline style="object-position:${d.coverPos || "center"}"${d.coverPoster ? ` poster="${d.coverPoster}" data-fallback="${encodeURIComponent(`<img src="${d.coverPoster}" alt="" style="object-position:${d.coverPos || "center"}">`)}"` : ""}></video>`
+      : `<img src="${coverSrc}" alt="${p.title}" style="object-position:${d.coverPos || "center"}">`;
+    const sections = d.video && !d.coverVideo ? [...d.sections, { h: "Watch the video", html:
+      `<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${d.video}?rel=0${d.videoStart ? "&start=" + d.videoStart : ""}" title="${p.title} video" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>` }] : d.sections;
+    $("detail").innerHTML = `
+      <article class="detail">
+        <a href="#work" class="back">← All case studies</a>
+        <header class="d-hero">
+          <div class="label"><span class="dot"></span>${p.tag} · ${d.org}</div>
+          <h1>${p.title}</h1>
+          <p class="lede">${d.subtitle}</p>
+        </header>
+        <div class="d-meta">
+          <div><span class="label">Role</span><b>${d.role}</b></div>
+          <div><span class="label">Timeline</span><b>${d.when}</b></div>
+          <div><span class="label">Organization</span><b>${d.org}</b></div>
+          <div><span class="label">Tools</span><b>${p.tools.join(", ")}</b></div>
+        </div>
+        <div class="d-cover"${d.coverRatio ? ` style="aspect-ratio:${d.coverRatio}"` : ""}>${cover}</div>
+        <div class="d-body">
+          ${sections.map((s, k) => `
+            <section class="d-sec">
+              <div class="d-num"><span></span>${String(k + 1).padStart(2, "0")}</div>
+              <div><h2>${s.h}</h2><div class="prose">${s.html}</div></div>
+            </section>`).join("")}
+        </div>
+        ${d.links && d.links.length ? `<div class="d-links">${d.links.map(([l, u]) =>
+          `<a href="${u}" target="_blank" rel="noopener">${l} ↗</a>`).join("")}</div>` : ""}
+        <a href="#/work/${next.slug}" class="d-next">
+          <div><div class="label">Next case study</div><h3>${next.title}</h3></div>
+          <span class="arrow">${ARROW}</span>
+        </a>
+      </article>`;
+  }
+
+  /* ---------- ROUTER: #/work/<slug> opens a case study ---------- */
+  function route() {
+    const m = location.hash.match(/^#\/work\/([\w-]+)/);
+    const proj = m && P.projects.find(x => x.slug === m[1]);
+    if (proj) {
+      renderDetail(proj);
+      $("home").hidden = true; $("detail").hidden = false;
+      document.title = `${proj.title} — ${full}`;
+      window.scrollTo({ top: 0, behavior: "instant" });
+      return;
+    }
+    const wasDetail = !$("detail").hidden;
+    $("detail").hidden = true; $("home").hidden = false; $("detail").innerHTML = "";
+    document.title = baseTitle;
+    const target = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+    if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: wasDetail ? "instant" : "smooth" }));
+  }
+  window.addEventListener("hashchange", route);
+
+  /* ---------- SCROLL REVEAL + METERS ---------- */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add("in");
+      en.target.querySelectorAll(".meter-fill").forEach(f => f.style.width = f.dataset.w + "%");
+      io.unobserve(en.target);
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+  /* =========================================================
+     CROP TOOL
+     ========================================================= */
+  (function () {
+    const KEY = "cropDraft";
+    let draft = {};
+    try { draft = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+    const saveDraft = () => { try { localStorage.setItem(KEY, JSON.stringify(draft)); } catch (e) {} };
+    const all = () => { const o = Object.assign({}, CROPS, draft); Object.keys(o).forEach(k => o[k] === null && delete o[k]); return o; };
+    const ctxOf = el => el.closest(".project-media") ? "card" : el.closest(".d-cover") ? "cover" : el.closest(".learn-media") ? "learn" : el.closest(".avatar") ? "avatar" : "fig";
+    const keyOf = el => ctxOf(el) + "|" + (el.getAttribute("src") || "");
+    const ensureClip = el => {
+      if (ctxOf(el) !== "fig" || el.parentElement.classList.contains("crop-clip")) return;
+      const w = document.createElement("span"); w.className = "crop-clip";
+      el.parentNode.insertBefore(w, el); w.appendChild(el);
+    };
+    function apply(el) {
+      if (!el.matches || !el.matches("img, video") || el.closest(".crop-ui")) return;
+      if (el.dataset.origStyle === undefined) el.dataset.origStyle = el.getAttribute("style") || "";
+      el.setAttribute("style", el.dataset.origStyle);
+      const c = all()[keyOf(el)]; if (!c) return;
+      const x = c.x ?? 50, y = c.y ?? 50, z = c.zoom || 1;
+      el.style.objectFit = c.fit || "cover";
+      el.style.objectPosition = `${x}% ${y}%`;
+      if (c.ratio && ctxOf(el) === "fig") { el.style.aspectRatio = c.ratio; el.style.width = "100%"; el.style.height = "auto"; el.style.maxHeight = "none"; }
+      if (z > 1) { ensureClip(el); el.style.transform = `scale(${z})`; el.style.transformOrigin = `${x}% ${y}%`; }
+    }
+    const applyAll = (root = document) => root.querySelectorAll("img, video").forEach(apply);
+    new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => {
+      if (n.nodeType !== 1) return;
+      if (n.matches("img, video")) apply(n); else applyAll(n);
+    }))).observe(document.body, { childList: true, subtree: true });
+    applyAll();
+
+    /* ---- editor UI ---- */
+    let on = false, sel = null, drag = null;
+    const RATIOS = [["Original", ""], ["1:1", "1/1"], ["4:5", "4/5"], ["4:3", "4/3"], ["3:2", "3/2"], ["16:9", "16/9"], ["9:16", "9/16"], ["3:1", "3/1"]];
+    const ui = document.createElement("div"); ui.className = "crop-ui"; ui.hidden = true;
+    ui.innerHTML = `
+      <div class="crop-bar">
+        <span><b>✂ Crop mode</b> · click any image</span>
+        <button data-a="copy">Copy code</button><button data-a="clear">Clear all</button><button data-a="exit">Exit</button>
+      </div>
+      <div class="crop-panel" hidden>
+        <div class="crop-name"></div>
+        <div class="crop-row crop-ratios"><label>Shape</label><div>${RATIOS.map(([l, v]) => `<button data-r="${v}">${l}</button>`).join("")}</div></div>
+        <div class="crop-row"><label>Fit</label><div><button data-f="cover">Fill & crop</button><button data-f="contain">Show all</button></div></div>
+        <div class="crop-row"><label>Zoom <i data-v="zoom"></i></label><input type="range" min="1" max="3" step="0.05" data-k="zoom"></div>
+        <div class="crop-row"><label>Left ↔ right <i data-v="x"></i></label><input type="range" min="0" max="100" step="1" data-k="x"></div>
+        <div class="crop-row"><label>Top ↕ bottom <i data-v="y"></i></label><input type="range" min="0" max="100" step="1" data-k="y"></div>
+        <p class="crop-hint">Tip: drag the image itself to reposition it.</p>
+        <div class="crop-actions"><button data-a="reset">Reset this image</button><button data-a="done" class="primary">Done</button></div>
+      </div>
+      <div class="crop-modal" hidden><div><h4>Paste this into index.html</h4><p>Replace the line <code>const CROPS = {};</code> (near the top of the file, under "CROP TOOL") with:</p><textarea readonly></textarea><div class="crop-actions"><button data-a="close" class="primary">Close</button></div></div></div>`;
+    document.body.appendChild(ui);
+    const panel = ui.querySelector(".crop-panel"), modal = ui.querySelector(".crop-modal");
+    const cur = () => sel ? (all()[keyOf(sel)] || {}) : {};
+    const setCur = patch => {
+      if (!sel) return;
+      const n = Object.assign({ x: 50, y: 50, zoom: 1, fit: "cover", ratio: "" }, cur(), patch);
+      n.x = Math.round(n.x * 10) / 10; n.y = Math.round(n.y * 10) / 10; n.zoom = Math.round(n.zoom * 100) / 100;
+      draft[keyOf(sel)] = n;
+      saveDraft(); document.querySelectorAll("img, video").forEach(el => keyOf(el) === keyOf(sel) && apply(el)); sync();
+    };
+    function sync() {
+      if (!sel) return;
+      const c = Object.assign({ x: 50, y: 50, zoom: 1, fit: "cover", ratio: "" }, cur());
+      ui.querySelector(".crop-name").textContent = `${ctxOf(sel)} · ${(sel.getAttribute("src") || "").split("/").pop().split("?")[0]}`;
+      ui.querySelector(".crop-ratios").style.display = ctxOf(sel) === "fig" ? "" : "none";
+      ui.querySelectorAll("[data-r]").forEach(b => b.classList.toggle("on", b.dataset.r === (c.ratio || "")));
+      ui.querySelectorAll("[data-f]").forEach(b => b.classList.toggle("on", b.dataset.f === c.fit));
+      ui.querySelectorAll("[data-k]").forEach(i => { i.value = c[i.dataset.k]; });
+      ui.querySelector('[data-v="zoom"]').textContent = (+c.zoom).toFixed(2) + "×";
+      ui.querySelector('[data-v="x"]').textContent = Math.round(c.x) + "%";
+      ui.querySelector('[data-v="y"]').textContent = Math.round(c.y) + "%";
+    }
+    const select = el => {
+      document.querySelectorAll(".crop-selected").forEach(e => e.classList.remove("crop-selected"));
+      sel = el; if (el) { el.classList.add("crop-selected"); panel.hidden = false; sync(); } else panel.hidden = true;
+    };
+    const toggle = v => { on = v; ui.hidden = !on; document.body.classList.toggle("crop-mode", on); if (!on) select(null); };
+    const mediaFrom = t => {
+      if (t.closest(".crop-ui")) return null;
+      if (t.matches("img, video")) return t;
+      const box = t.closest("figure, .project-media, .d-cover, .learn-media, .avatar");
+      return box ? box.querySelector("img, video") : null;
+    };
+    document.addEventListener("click", e => {
+      if (!on) return; const m = mediaFrom(e.target); if (!m) return;
+      e.preventDefault(); e.stopPropagation(); if (m !== sel) select(m);
+    }, true);
+    document.addEventListener("pointerdown", e => {
+      if (!on || !sel) return; const m = mediaFrom(e.target); if (m !== sel) return;
+      e.preventDefault(); const r = sel.getBoundingClientRect(), c = Object.assign({ x: 50, y: 50, zoom: 1 }, cur());
+      drag = { sx: e.clientX, sy: e.clientY, x: c.x, y: c.y, w: r.width, h: r.height, z: c.zoom };
+    }, true);
+    window.addEventListener("pointermove", e => {
+      if (!drag) return; const k = 1.6 / drag.z;
+      setCur({ x: Math.max(0, Math.min(100, drag.x - (e.clientX - drag.sx) / drag.w * 100 * k)),
+               y: Math.max(0, Math.min(100, drag.y - (e.clientY - drag.sy) / drag.h * 100 * k)) });
+    });
+    window.addEventListener("pointerup", () => { drag = null; });
+    ui.addEventListener("input", e => { const k = e.target.dataset.k; if (k) setCur({ [k]: +e.target.value }); });
+    ui.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      if (b.dataset.r !== undefined) return setCur({ ratio: b.dataset.r });
+      if (b.dataset.f) return setCur({ fit: b.dataset.f });
+      const a = b.dataset.a;
+      if (a === "reset" && sel) { const k = keyOf(sel); if (CROPS[k]) draft[k] = null; else delete draft[k]; saveDraft(); document.querySelectorAll("img, video").forEach(el => keyOf(el) === k && apply(el)); sync(); }
+      if (a === "done") select(null);
+      if (a === "exit") toggle(false);
+      if (a === "clear" && confirmClear()) { draft = {}; saveDraft(); applyAll(); sync(); }
+      if (a === "copy") {
+        const text = "const CROPS = " + JSON.stringify(all(), null, 2) + ";";
+        const ta = modal.querySelector("textarea"); ta.value = text; modal.hidden = false; ta.select();
+        try { navigator.clipboard && navigator.clipboard.writeText(text); } catch (err) {}
+      }
+      if (a === "close") modal.hidden = true;
+    });
+    function confirmClear() { b = ui.querySelector('[data-a="clear"]'); if (b.dataset.armed) { delete b.dataset.armed; b.textContent = "Clear all"; return true; } b.dataset.armed = 1; b.textContent = "Click again to clear"; setTimeout(() => { delete b.dataset.armed; b.textContent = "Clear all"; }, 3000); return false; }
+    var b;
+    document.addEventListener("keydown", e => { if (e.altKey && e.shiftKey && e.code === "KeyC") toggle(!on); if (on && e.key === "Escape") select(null); });
+    if (/[?&]crop\b/.test(location.search)) toggle(true);
+    /* Click a playing video to turn its sound on or off */
+    document.addEventListener("click", e => {
+      const v = e.target.closest(".prose video, .d-cover video");
+      if (!v || v.controls || document.body.classList.contains("crop-mode")) return;
+      v.muted = !v.muted; if (v.paused) v.play();
+    });
+    /* A small "Crop images" button, shown only when you open the file on your own computer */
+    if (location.protocol === "file:" || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+      const cb = document.createElement("button");
+      cb.type = "button"; cb.textContent = "✂ Crop images"; cb.title = "Edit image crops (Option/Alt+Shift+C)";
+      cb.style.cssText = "position:fixed;left:16px;bottom:16px;z-index:9998;border:0;border-radius:999px;padding:9px 14px;font:500 12.5px var(--sans, system-ui);background:var(--text);color:var(--bg);cursor:pointer;opacity:.85";
+      cb.addEventListener("click", () => toggle(!on));
+      document.body.appendChild(cb);
+    }
+  })();
+
+  route();
+</script>
+</body>
+</html>
