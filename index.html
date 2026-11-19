@@ -1183,7 +1183,7 @@ const PROFILE = {
       },
     },
     {
-      slug: "cpace",
+      slug: "cpace", hidden: true,
       title: "CPACE", size: "narrow", category: "Personal", tag: "Assistive Tech",
       img: "assets/thumbnails/cpace.png",
       desc: "An open-source head-tracking headband and bite-sensor mouthpiece so people with quadriplegia can use any phone or computer.",
@@ -1235,7 +1235,7 @@ const PROFILE = {
       },
     },
     {
-      slug: "auto-mask",
+      slug: "auto-mask", hidden: true,
       title: "Auto Mask", size: "narrow", category: "Personal", tag: "Assistive Tech",
       img: "assets/thumbnails/automask.png",
       desc: "A touchless robotic mask with an eye shield and air-quality and muscle sensors, built for COVID-19 and wildfire smoke. Won Best Hardware Hack at TeenHacksHTX.",
@@ -1278,7 +1278,7 @@ const PROFILE = {
       },
     },
     {
-      slug: "mouseky",
+      slug: "mouseky", hidden: true,
       title: "Mouseky", size: "narrow", category: "Personal", tag: "Product Design",
       img: "assets/thumbnails/mouseky.png",
       desc: "A split, wireless, 64-key keyboard with an integrated mouse. Featured by Arduino, Gizmodo, Hackster.io, and Hackaday.",
@@ -1541,6 +1541,7 @@ const PROFILE = {
 
   /* ---------- RENDER FROM PROFILE ---------- */
   const P = PROFILE, $ = id => document.getElementById(id);
+  P.projects = P.projects.filter(p => !p.hidden);  // drop projects marked hidden: true
   const full = `${P.firstName} ${P.lastName}`;
   const baseTitle = `${full} — ${P.title || "Engineering Portfolio"}`;
   document.title = baseTitle;
